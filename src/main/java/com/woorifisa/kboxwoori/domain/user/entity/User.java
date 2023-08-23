@@ -6,9 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "users")
@@ -63,4 +61,21 @@ public class User {
 
     @Column(nullable = false)
     private Boolean wooriLinked;
+
+    @Builder
+    public User(Boolean admin, String userId, String password, String name, Gender gender, LocalDate birth, String phone, String addr, Club club, Integer point, Boolean svcAgmt, Boolean infoAgmt, Boolean wooriLinked) {
+        this.admin = admin;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.gender = gender;
+        this.birth = birth;
+        this.phone = phone;
+        this.addr = addr;
+        this.club = club;
+        this.point = point;
+        this.svcAgmt = svcAgmt;
+        this.infoAgmt = infoAgmt;
+        this.wooriLinked = wooriLinked;
+    }
 }
