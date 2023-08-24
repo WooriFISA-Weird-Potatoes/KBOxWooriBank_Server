@@ -11,13 +11,15 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
 
     @Transactional
-    public Long join(UserDTO dto) {
-        dto.setPassword(encoder.encode(dto.getPassword()));
-
-        return userRepository.save(dto.toEntity()).getId();
+    public Long join(UserDTO userDto) {
+        userDto.setPassword(encoder.encode(userDto.getPassword()));
+        return userRepository.save(userDto.toEntity()).getId();
     }
+
+
 }
