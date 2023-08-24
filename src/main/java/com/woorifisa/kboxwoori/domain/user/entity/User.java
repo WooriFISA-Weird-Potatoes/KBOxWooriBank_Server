@@ -20,7 +20,7 @@ public class User {
     private Boolean admin;
 
     @Size(max = 100)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String userId;
 
     @Size(max = 100)
