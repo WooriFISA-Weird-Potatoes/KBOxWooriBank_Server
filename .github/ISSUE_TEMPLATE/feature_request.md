@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: 이슈 템플릿
-title: "[Feat] 구현 내용"
+title: "[Feature] 구현 내용"
 labels: ''
 assignees: ''
 
