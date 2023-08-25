@@ -3,11 +3,14 @@ package com.woorifisa.kboxwoori.domain.user.dto;
 import com.woorifisa.kboxwoori.domain.user.entity.Club;
 import com.woorifisa.kboxwoori.domain.user.entity.Gender;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDate;
-public class UserSessionDTO implements Serializable {
+@Getter
+@AllArgsConstructor
+public class UpdateUserResponseDTO {
     private String userId;
     private String password;
     private String name;
@@ -16,13 +19,8 @@ public class UserSessionDTO implements Serializable {
     private String phone;
     private String addr;
     private Club club;
-    private Integer point;
-    private Boolean svcAgmt;
-    private Boolean infoAgmt;
-    private Boolean wooriLinked;
 
-    //Entity -> DTO
-    public UserSessionDTO(User user) {
+    public UpdateUserResponseDTO(User user) {
         this.userId = user.getUserId();
         this.password = user.getPassword();
         this.name = user.getName();
@@ -31,9 +29,21 @@ public class UserSessionDTO implements Serializable {
         this.phone = user.getPhone();
         this.addr = user.getAddr();
         this.club = user.getClub();
-        this.point = user.getPoint();
-        this.svcAgmt = user.getSvcAgmt();
-        this.infoAgmt = user.getInfoAgmt();
-        this.wooriLinked = user.getWooriLinked();
     }
+
+    public User toEntity() {
+        User user;
+        user = User.builder()
+                .userId(userId)
+                .password(password)
+                .name(name)
+                .gender(gender)
+                .birth(birth)
+                .phone(phone)
+                .addr(addr)
+                .club(club)
+                .build();
+        return user;
+    }
+
 }

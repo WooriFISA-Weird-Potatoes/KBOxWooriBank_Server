@@ -78,4 +78,17 @@ public class User {
         this.infoAgmt = infoAgmt;
         this.wooriLinked = wooriLinked;
     }
+
+    public void updateUser(String userId, String password, String name, Gender gender, LocalDate birth, String phone, String addr, Club club){
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.gender = gender;
+        this.birth = birth;
+        this.phone = phone;
+        this.addr = addr;
+        this.club = club;
+    }
+
+
 }
