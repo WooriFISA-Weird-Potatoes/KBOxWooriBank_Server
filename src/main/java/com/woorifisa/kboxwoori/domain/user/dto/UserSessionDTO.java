@@ -3,10 +3,10 @@ package com.woorifisa.kboxwoori.domain.user.dto;
 import com.woorifisa.kboxwoori.domain.user.entity.Club;
 import com.woorifisa.kboxwoori.domain.user.entity.Gender;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-
 public class UserSessionDTO implements Serializable {
     private String userId;
     private String password;
