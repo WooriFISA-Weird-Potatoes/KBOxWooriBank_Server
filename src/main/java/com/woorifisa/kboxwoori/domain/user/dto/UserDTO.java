@@ -26,7 +26,6 @@ public class UserDTO {
     private Integer point;
     private Boolean svcAgmt;
     private Boolean infoAgmt;
-    private Boolean wooriLinked;
 
 
     //DTO -> Entity
@@ -45,7 +44,7 @@ public class UserDTO {
                 .point(0)
                 .svcAgmt(svcAgmt)
                 .infoAgmt(infoAgmt)
-                .wooriLinked(wooriLinked)
+                .wooriLinked(false)
                 .build();
         return user;
     }
