@@ -10,4 +10,9 @@ import java.util.Optional;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
+    @Query(value = "SELECT * " +
+            "FROM event e " +
+            "WHERE DATE(e.start_date) = DATE(NOW()) AND e.is_ended = False " +
+            "LIMIT 1", nativeQuery = true)
+    Optional<Event> findByStartDateEquals();
 }
