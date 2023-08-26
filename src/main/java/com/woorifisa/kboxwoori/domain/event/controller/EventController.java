@@ -22,4 +22,19 @@ public class EventController {
         return eventService.findCurrentEvent();
     }
 
+    @PostMapping("/{eventId}")
+    public Boolean joinEvent(@PathVariable Long eventId,
+                             @AuthenticationPrincipal PrincipalDetails principalDetails,
+                             @SessionAttribute(required = false)UserSessionDTO user) {
+        //TODO: eventId가 다를 때 처리
+        if (user == null) {
+            return false;
+        }
+
+        if (!principalDetails.isWooriLinked()) {
+            return false;
+        }
+
+        return eventService.joinEvent(principalDetails.getUsername());
+    }
 }

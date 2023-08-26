@@ -51,4 +51,44 @@ public class EventService {
         return new EventResponseDto(event);
     }
 
+    public Boolean joinEvent(String userId) {
+        if (LocalDateTime.now().isBefore(event.getStartDate()) || LocalDateTime.now().isAfter(event.getEndDate())) {
+            return false;
+        }
+
+        if (reachedLimit) {
+            return false;
+        }
+        return saveWinner(userId);
+    }
+
+    public Boolean saveWinner(String userId) {
+        try {
+            Boolean result = eventRedisRepository.saveWinner(KEY + event.getId(), userId, event.getWinnerLimit());
+            if (!result && !reachedLimit) {
+                reachedLimit = true;
+                updateIsEnded();
+            }
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Transactional
+    public void updateIsEnded() {
+        Event event = eventRepository.findById(this.event.getId()).orElseThrow(() -> OngoingEventNotFoundException.EXCEPTION);
+        event.updateIsEnded();
+        this.event = event;
+    }
+
+    public Long getSize() {
+        return eventRedisRepository.getSize(KEY + event.getId());
+    }
+
+    //테스트용
+    public void delete(Long eventId) {
+        eventRedisRepository.delete(KEY + eventId);
+    }
 }
