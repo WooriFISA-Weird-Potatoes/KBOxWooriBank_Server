@@ -2,6 +2,8 @@ package com.woorifisa.kboxwoori.domain.event.service;
 
 import com.woorifisa.kboxwoori.domain.event.dto.EventResponseDto;
 import com.woorifisa.kboxwoori.domain.event.entity.Event;
+import com.woorifisa.kboxwoori.domain.event.exception.EventIsEndedException;
+import com.woorifisa.kboxwoori.domain.event.exception.InvalidEventParticipationTimeException;
 import com.woorifisa.kboxwoori.domain.event.exception.OngoingEventNotFoundException;
 import com.woorifisa.kboxwoori.domain.event.repository.EventRedisRepository;
 import com.woorifisa.kboxwoori.domain.event.repository.EventRepository;
@@ -51,28 +53,25 @@ public class EventService {
         return new EventResponseDto(event);
     }
 
-    public Boolean joinEvent(String userId) {
+    public void joinEvent(String userId) {
         if (LocalDateTime.now().isBefore(event.getStartDate()) || LocalDateTime.now().isAfter(event.getEndDate())) {
-            return false;
+            throw InvalidEventParticipationTimeException.EXCEPTION;
         }
 
         if (reachedLimit) {
-            return false;
+            throw EventIsEndedException.EXCEPTION;
         }
-        return saveWinner(userId);
+        saveWinner(userId);
     }
 
-    public Boolean saveWinner(String userId) {
-        try {
-            Boolean result = eventRedisRepository.saveWinner(KEY + event.getId(), userId, event.getWinnerLimit());
-            if (!result && !reachedLimit) {
-                reachedLimit = true;
-                updateIsEnded();
-            }
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+    private void saveWinner(String userId) {
+        Boolean result = eventRedisRepository.saveWinner(KEY + event.getId(), userId, event.getWinnerLimit());
+        if (!result && !reachedLimit) {
+            reachedLimit = true;
+            updateIsEnded();
+        }
+        if (!result) {
+            throw EventIsEndedException.EXCEPTION;
         }
     }
 

@@ -1,5 +1,7 @@
 package com.woorifisa.kboxwoori.domain.event.repository;
 
+import com.woorifisa.kboxwoori.domain.event.exception.DuplicateParticipationException;
+import com.woorifisa.kboxwoori.global.exception.InternalServerErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -16,16 +18,21 @@ public class EventRedisRepository {
     private final RedisTemplate<String, Object> redisTemplate;
     private final RedisScript<String> joinEventScript;
 
-    public Boolean saveWinner(String key, String userId, Integer limit) throws Exception {
+    private static final String SUCCESS = "success";
+    private static final String FAILED = "failed";
+    private static final String DUPLICATED = "duplicated";
+
+    public Boolean saveWinner(String key, String userId, Integer limit) {
         String result = redisTemplate.execute(joinEventScript, List.of(key), String.valueOf(limit), userId);
-        if ("success".equals(result)) {
+
+        if (SUCCESS.equals(result)) {
             return true;
-        } else if ("failed".equals(result)) {
+        } else if (FAILED.equals(result)) {
             return false;
-        } else if ("duplicated".equals(result)) {
-            return false;
+        } else if (DUPLICATED.equals(result)) {
+            throw DuplicateParticipationException.EXCEPTION;
         } else {
-            throw new Exception();
+            throw InternalServerErrorException.EXCEPTION;
         }
     }
 
