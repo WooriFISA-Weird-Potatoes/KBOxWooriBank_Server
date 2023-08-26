@@ -1,6 +1,7 @@
 package com.woorifisa.kboxwoori.domain.event.service;
 
 import com.woorifisa.kboxwoori.domain.event.entity.Event;
+import com.woorifisa.kboxwoori.domain.event.exception.InvalidEventParticipationTimeException;
 import com.woorifisa.kboxwoori.domain.event.exception.OngoingEventNotFoundException;
 import com.woorifisa.kboxwoori.domain.event.repository.EventRepository;
 import com.woorifisa.kboxwoori.domain.user.entity.Club;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -30,6 +32,7 @@ class EventServiceTest {
     private UserRepository userRepository;
 
     @Test
+    @Transactional
     void 오늘의_이벤트_가져오기() {
         //진행중인 이벤트
         Event event = Event.builder()
@@ -42,7 +45,7 @@ class EventServiceTest {
 
         Event savedEvent = eventRepository.save(event);
 
-        //종료된 이벤트
+        //시작 전 이벤트
         Event event2 = Event.builder()
                 .prize("아이패드")
                 .winnerLimit(10)
@@ -57,6 +60,7 @@ class EventServiceTest {
     }
 
     @Test
+    @Transactional
     void 오늘의_이벤트가_없으면_실패() {
         //진행중인 이벤트
         Event event = Event.builder()
@@ -73,6 +77,7 @@ class EventServiceTest {
     }
 
     @Test
+    @Transactional
     void 이벤트_시간_외에_참여하면_실패() {
         User user = User.builder()
                 .admin(false)
@@ -104,8 +109,6 @@ class EventServiceTest {
         eventRepository.save(event);
 
         eventService.findCurrentEvent();
-        Boolean result = eventService.joinEvent("test");
-
-        assertFalse(result);
+        assertThrows(InvalidEventParticipationTimeException.class, () -> eventService.joinEvent("test"));
     }
 }
