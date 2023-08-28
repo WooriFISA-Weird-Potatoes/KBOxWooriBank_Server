@@ -4,13 +4,14 @@ import com.woorifisa.kboxwoori.domain.user.entity.Club;
 import com.woorifisa.kboxwoori.domain.user.entity.Gender;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
-public class UpdateUserResponseDTO {
+@Data
+public class UserInfoResponseDTO {
     private String userId;
     private String password;
     private String name;
@@ -20,7 +21,7 @@ public class UpdateUserResponseDTO {
     private String addr;
     private Club club;
 
-    public UpdateUserResponseDTO(User user) {
+    public UserInfoResponseDTO(User user) {
         this.userId = user.getUserId();
         this.password = user.getPassword();
         this.name = user.getName();
