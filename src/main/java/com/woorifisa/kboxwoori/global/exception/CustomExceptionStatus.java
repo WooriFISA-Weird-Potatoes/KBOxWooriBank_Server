@@ -12,6 +12,8 @@ public enum CustomExceptionStatus {
 
     NOT_AUTHENTICATED_ACCOUNT(1100, false, "로그인이 필요합니다."),
 
+    ACCOUNT_NOT_FOUND(1200, false, "사용자를 찾을 수 없습니다."),
+
     ONGOING_EVENT_NOT_FOUND(1300, false, "현재 진행중인 이벤트가 없습니다."),
     WOORI_LINK_REQUIRED(1301, false, "우리 은행 계정 연동이 필요합니다."),
     INVALID_EVENT_PARTICIPATION_TIME( 1302, false, "이벤트 참여 시간이 아닙니다."),
