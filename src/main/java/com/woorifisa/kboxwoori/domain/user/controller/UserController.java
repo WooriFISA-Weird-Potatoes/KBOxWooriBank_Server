@@ -1,7 +1,8 @@
 package com.woorifisa.kboxwoori.domain.user.controller;
 
-import com.woorifisa.kboxwoori.domain.user.dto.UpdateUserResponseDTO;
+import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDTO;
 import com.woorifisa.kboxwoori.domain.user.dto.UserDTO;
+import com.woorifisa.kboxwoori.domain.user.dto.UserPointResponseDTO;
 import com.woorifisa.kboxwoori.domain.user.service.UserService;
 import com.woorifisa.kboxwoori.global.config.security.PrincipalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +48,8 @@ public class UserController {
     }
 
     @GetMapping("/api/users")
-    public UpdateUserResponseDTO showEditForm(@AuthenticationPrincipal PrincipalDetails pdetails){
-        UpdateUserResponseDTO updateUserResponseDTO = userService.findUser(pdetails.getUsername());
+    public UserInfoResponseDTO showEditForm(@AuthenticationPrincipal PrincipalDetails pdetails){
+        UserInfoResponseDTO updateUserResponseDTO = userService.findUser(pdetails.getUsername());
         return updateUserResponseDTO;
     }
 
