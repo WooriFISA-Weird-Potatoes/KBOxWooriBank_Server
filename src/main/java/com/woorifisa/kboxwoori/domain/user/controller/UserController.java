@@ -1,7 +1,8 @@
 package com.woorifisa.kboxwoori.domain.user.controller;
 
-import com.woorifisa.kboxwoori.domain.user.dto.UpdateUserResponseDTO;
+import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDTO;
 import com.woorifisa.kboxwoori.domain.user.dto.UserDTO;
+import com.woorifisa.kboxwoori.domain.user.dto.UserPointResponseDTO;
 import com.woorifisa.kboxwoori.domain.user.service.UserService;
 import com.woorifisa.kboxwoori.global.config.security.PrincipalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,15 +48,21 @@ public class UserController {
     }
 
     @GetMapping("/api/users")
-    public UpdateUserResponseDTO showEditForm(@AuthenticationPrincipal PrincipalDetails pdetails){
-        UpdateUserResponseDTO updateUserResponseDTO = userService.findUser(pdetails.getUsername());
+    public UserInfoResponseDTO showEditForm(@AuthenticationPrincipal PrincipalDetails pdetails){
+        UserInfoResponseDTO updateUserResponseDTO = userService.findUser(pdetails.getUsername());
         return updateUserResponseDTO;
     }
 
     @PutMapping("/api/users")
-    public String EditUserInfo(@AuthenticationPrincipal PrincipalDetails pdetails, @RequestBody UpdateUserResponseDTO userDto){
-        UpdateUserResponseDTO updateUserResponseDTO = userService.updateUser(pdetails.getUsername(), userDto);
-        return "수정 성공!";
+    public UserInfoResponseDTO EditUserInfo(@AuthenticationPrincipal PrincipalDetails pdetails, @RequestBody UserInfoResponseDTO userDto){
+        UserInfoResponseDTO updateUserResponseDTO = userService.updateUserInfo(pdetails.getUsername(), userDto);
+        return updateUserResponseDTO;
+    }
+
+    @GetMapping("/api/point/honeymoney")
+    public UserPointResponseDTO getUserPoint(@AuthenticationPrincipal PrincipalDetails pdetails){
+        UserPointResponseDTO userPointResponseDTO = userService.getUserPoint(pdetails.getUsername());
+        return userPointResponseDTO;
     }
 
 
