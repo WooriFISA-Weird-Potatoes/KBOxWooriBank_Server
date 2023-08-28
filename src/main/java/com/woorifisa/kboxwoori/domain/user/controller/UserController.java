@@ -3,8 +3,10 @@ package com.woorifisa.kboxwoori.domain.user.controller;
 import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDTO;
 import com.woorifisa.kboxwoori.domain.user.dto.UserDTO;
 import com.woorifisa.kboxwoori.domain.user.dto.UserPointResponseDTO;
+import com.woorifisa.kboxwoori.domain.user.exception.NotAuthenticatedAccountException;
 import com.woorifisa.kboxwoori.domain.user.service.UserService;
 import com.woorifisa.kboxwoori.global.config.security.PrincipalDetails;
+import com.woorifisa.kboxwoori.global.response.ResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,7 +67,13 @@ public class UserController {
         return userPointResponseDTO;
     }
 
-
-
-
+    @GetMapping("/api/users/woori")
+    public ResponseDto IsWooriLinked(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        if (principalDetails == null) {
+            throw NotAuthenticatedAccountException.EXCEPTION;
+        }
+        userService.IsWooriLinked(principalDetails.getUsername());
+        return ResponseDto.success();
+    }
+    
 }

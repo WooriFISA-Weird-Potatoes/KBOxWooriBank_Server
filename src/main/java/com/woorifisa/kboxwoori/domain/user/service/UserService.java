@@ -1,9 +1,11 @@
 package com.woorifisa.kboxwoori.domain.user.service;
 
+import com.woorifisa.kboxwoori.domain.event.exception.WooriLinkRequiredException;
 import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDTO;
 import com.woorifisa.kboxwoori.domain.user.dto.UserDTO;
 import com.woorifisa.kboxwoori.domain.user.dto.UserPointResponseDTO;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
+import com.woorifisa.kboxwoori.domain.user.exception.AccountNotFoundException;
 import com.woorifisa.kboxwoori.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -64,7 +66,12 @@ public class UserService {
 
     }
 
-
-
+    public Boolean IsWooriLinked(String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> AccountNotFoundException.EXCEPTION);
+        if (!user.getWooriLinked()) {
+            throw WooriLinkRequiredException.EXCEPTION;
+        }
+        return true;
+    }
 
 }
