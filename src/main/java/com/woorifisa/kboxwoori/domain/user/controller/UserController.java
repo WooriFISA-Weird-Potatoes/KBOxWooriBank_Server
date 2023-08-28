@@ -54,9 +54,15 @@ public class UserController {
     }
 
     @PutMapping("/api/users")
-    public String EditUserInfo(@AuthenticationPrincipal PrincipalDetails pdetails, @RequestBody UpdateUserResponseDTO userDto){
-        UpdateUserResponseDTO updateUserResponseDTO = userService.updateUser(pdetails.getUsername(), userDto);
-        return "수정 성공!";
+    public UserInfoResponseDTO EditUserInfo(@AuthenticationPrincipal PrincipalDetails pdetails, @RequestBody UserInfoResponseDTO userDto){
+        UserInfoResponseDTO updateUserResponseDTO = userService.updateUserInfo(pdetails.getUsername(), userDto);
+        return updateUserResponseDTO;
+    }
+
+    @GetMapping("/api/point/honeymoney")
+    public UserPointResponseDTO getUserPoint(@AuthenticationPrincipal PrincipalDetails pdetails){
+        UserPointResponseDTO userPointResponseDTO = userService.getUserPoint(pdetails.getUsername());
+        return userPointResponseDTO;
     }
 
 
