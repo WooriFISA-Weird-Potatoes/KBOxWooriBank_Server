@@ -1,6 +1,6 @@
 package com.woorifisa.kboxwoori.domain.user.service;
 
-import com.woorifisa.kboxwoori.domain.user.dto.UserSessionDTO;
+import com.woorifisa.kboxwoori.domain.user.dto.UserSessionDto;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
 import com.woorifisa.kboxwoori.domain.user.repository.UserRepository;
 import com.woorifisa.kboxwoori.global.config.security.PrincipalDetails;
@@ -24,7 +24,7 @@ public class PrincipalDetailService implements UserDetailsService {
         User user = userRepository.findByUserId(username).orElseThrow(() ->
                 new UsernameNotFoundException("해당 회원이 존재하지 않습니다."));
 
-        session.setAttribute("user", new UserSessionDTO(user));
+        session.setAttribute("user", new UserSessionDto(user));
 
         return new PrincipalDetails(user);
     }
