@@ -1,18 +1,17 @@
 package com.woorifisa.kboxwoori.domain.user.entity;
 
-import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDTO;
+import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDto;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,7 +80,7 @@ public class User implements Serializable {
         this.wooriLinked = wooriLinked;
     }
 
-    public void updateUser(UserInfoResponseDTO ResponseDTO){
+    public void updateUser(UserInfoResponseDto ResponseDTO){
         this.userId = ResponseDTO.getUserId();
         this.password = ResponseDTO.getPassword();
         this.name = ResponseDTO.getName();
@@ -90,6 +89,10 @@ public class User implements Serializable {
         this.phone = ResponseDTO.getPhone();
         this.addr = ResponseDTO.getAddr();
         this.club = ResponseDTO.getClub();
+    }
+
+    public void updateUserPoint(Integer point){
+        this.point = point;
     }
 
 
