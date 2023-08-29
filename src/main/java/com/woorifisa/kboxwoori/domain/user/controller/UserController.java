@@ -6,6 +6,7 @@ import com.woorifisa.kboxwoori.domain.user.dto.UserPageResponseDto;
 import com.woorifisa.kboxwoori.domain.user.exception.NotAuthenticatedAccountException;
 import com.woorifisa.kboxwoori.domain.user.service.UserService;
 import com.woorifisa.kboxwoori.global.config.security.PrincipalDetails;
+import com.woorifisa.kboxwoori.global.exception.CustomExceptionStatus;
 import com.woorifisa.kboxwoori.global.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -27,8 +30,17 @@ public class UserController {
     }
 
     @PostMapping("/api/join")
-    public ResponseDto join(@RequestBody UserDto userDto){
+    public ResponseDto join(@Valid @RequestBody UserDto userDto){
         userService.join(userDto);
+        return ResponseDto.success();
+    }
+
+    @GetMapping("/api/check")
+    public ResponseDto checkIdDuplication(@RequestParam(value="userId") String userId){
+        System.out.println(userId);
+        if(userService.existsByUserId(userId)){
+            return ResponseDto.error(CustomExceptionStatus.DUPLICATED_USERID);
+        }
         return ResponseDto.success();
     }
 
@@ -52,7 +64,7 @@ public class UserController {
     }
 
     @PutMapping("/api/users")
-    public ResponseDto<UserInfoResponseDto> EditUserInfo(@AuthenticationPrincipal PrincipalDetails pdetails, @RequestBody UserInfoResponseDto userDto){
+    public ResponseDto<UserInfoResponseDto> EditUserInfo(@AuthenticationPrincipal PrincipalDetails pdetails, @Valid @RequestBody UserInfoResponseDto userDto){
         UserInfoResponseDto updateUserResponseDTO = userService.updateUserInfo(pdetails, userDto);
         return ResponseDto.success(updateUserResponseDTO);
     }

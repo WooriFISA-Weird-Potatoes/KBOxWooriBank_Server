@@ -12,6 +12,7 @@ public enum CustomExceptionStatus {
     REQUEST_ERROR(1003, false, "올바르지 않은 입력 값입니다."),
 
     NOT_AUTHENTICATED_ACCOUNT(1100, false, "로그인이 필요합니다."),
+    DUPLICATED_USERID(1101, false, "이미 사용중인 아이디입니다."),
 
     ACCOUNT_NOT_FOUND(1200, false, "사용자를 찾을 수 없습니다."),
 
