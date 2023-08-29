@@ -3,11 +3,10 @@ package com.woorifisa.kboxwoori.domain.user.dto;
 import com.woorifisa.kboxwoori.domain.user.entity.Club;
 import com.woorifisa.kboxwoori.domain.user.entity.Gender;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
-import lombok.Getter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-public class UserSessionDTO implements Serializable {
+public class UserSessionDto implements Serializable {
     private String userId;
     private String password;
     private String name;
@@ -22,7 +21,7 @@ public class UserSessionDTO implements Serializable {
     private Boolean wooriLinked;
 
     //Entity -> DTO
-    public UserSessionDTO(User user) {
+    public UserSessionDto(User user) {
         this.userId = user.getUserId();
         this.password = user.getPassword();
         this.name = user.getName();
