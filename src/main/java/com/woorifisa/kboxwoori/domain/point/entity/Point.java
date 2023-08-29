@@ -22,7 +22,7 @@ public class Point {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    @JoinColumn(name = "userId")
     @JsonIgnore
     private User user;
 
