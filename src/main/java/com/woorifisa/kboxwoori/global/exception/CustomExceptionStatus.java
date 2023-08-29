@@ -18,7 +18,10 @@ public enum CustomExceptionStatus {
     WOORI_LINK_REQUIRED(1301, false, "우리 은행 계정 연동이 필요합니다."),
     INVALID_EVENT_PARTICIPATION_TIME( 1302, false, "이벤트 참여 시간이 아닙니다."),
     EVENT_IS_ENDED(1303, false, "이벤트가 마감되었습니다."),
-    DUPLICATE_PARTICIPATION(1304, false, "같은 이벤트에 중복 참여는 불가합니다.");
+    DUPLICATE_PARTICIPATION(1304, false, "같은 이벤트에 중복 참여는 불가합니다."),
+
+    POINT_OPERAION_ERROR(1700, false, "잔여 포인트가 부족합니다.");
+
 
     private final int status;
     private final boolean success;
