@@ -9,6 +9,7 @@ public enum CustomExceptionStatus {
     SUCCESS(1000, true, "요청에 성공하였습니다."),
     BAD_REQUEST(1001, false, "잘못된 요청입니다."),
     INTERNAL_SERVER_ERROR(1002, false, "서버 내부에서 문제가 발생하였습니다."),
+    REQUEST_ERROR(1003, false, "올바르지 않은 입력 값입니다."),
 
     NOT_AUTHENTICATED_ACCOUNT(1100, false, "로그인이 필요합니다."),
 
