@@ -1,12 +1,13 @@
 package com.woorifisa.kboxwoori.global.config.security;
 
 import com.woorifisa.kboxwoori.domain.user.entity.User;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+@Setter
 public class PrincipalDetails implements UserDetails {
 
     private User user;
