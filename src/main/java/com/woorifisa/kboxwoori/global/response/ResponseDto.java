@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -40,6 +42,15 @@ public class ResponseDto<T> {
         responseDto.setStatus(status.getStatus());
         responseDto.setSuccess(status.isSuccess());
         responseDto.setMessage(status.getMessage());
+        return responseDto;
+    }
+
+    public static <T> ResponseDto<T> error(CustomExceptionStatus status, T data) {
+        ResponseDto<T> responseDto = new ResponseDto<>();
+        responseDto.setStatus(status.getStatus());
+        responseDto.setSuccess(status.isSuccess());
+        responseDto.setMessage(status.getMessage());
+        responseDto.setData(data);
         return responseDto;
     }
 }
