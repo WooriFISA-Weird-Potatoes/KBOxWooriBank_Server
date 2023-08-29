@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @Data
-public class UserInfoResponseDTO {
+public class UserInfoResponseDto {
     private String userId;
     private String password;
     private String name;
@@ -21,7 +21,7 @@ public class UserInfoResponseDTO {
     private String addr;
     private Club club;
 
-    public UserInfoResponseDTO(User user) {
+    public UserInfoResponseDto(User user) {
         this.userId = user.getUserId();
         this.password = user.getPassword();
         this.name = user.getName();
