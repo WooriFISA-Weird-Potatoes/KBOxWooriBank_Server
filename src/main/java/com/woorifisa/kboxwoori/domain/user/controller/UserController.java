@@ -2,6 +2,7 @@ package com.woorifisa.kboxwoori.domain.user.controller;
 
 import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDto;
 import com.woorifisa.kboxwoori.domain.user.dto.UserDto;
+import com.woorifisa.kboxwoori.domain.user.dto.UserPageResponseDto;
 import com.woorifisa.kboxwoori.domain.user.exception.NotAuthenticatedAccountException;
 import com.woorifisa.kboxwoori.domain.user.service.UserService;
 import com.woorifisa.kboxwoori.global.config.security.PrincipalDetails;
@@ -20,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping({"", "/"})
-    public String index(@AuthenticationPrincipal PrincipalDetails pdetails) {
+    public String index(@AuthenticationPrincipal PrincipalDetails pdetails){
         System.out.println(pdetails.isWooriLinked());
         return "메인페이지";
     }
@@ -57,12 +58,18 @@ public class UserController {
     }
 
     @GetMapping("/api/users/woori")
-    public ResponseDto IsWooriLinked(@AuthenticationPrincipal PrincipalDetails pdetails) {
+    public ResponseDto IsWooriLinked(@AuthenticationPrincipal PrincipalDetails pdetails){
         if (pdetails == null) {
             throw NotAuthenticatedAccountException.EXCEPTION;
         }
         userService.IsWooriLinked(pdetails.getUsername());
         return ResponseDto.success();
+    }
+
+    @GetMapping("/api/users/mypage")
+    public ResponseDto mypage(@AuthenticationPrincipal PrincipalDetails pdetails){
+        UserPageResponseDto userPageResponseDto = userService.myPageUserInfo(pdetails.getUsername());
+        return ResponseDto.success(userPageResponseDto);
     }
     
 }

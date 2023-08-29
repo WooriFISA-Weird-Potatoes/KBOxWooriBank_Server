@@ -32,19 +32,4 @@ public class UserInfoResponseDto {
         this.club = user.getClub();
     }
 
-    public User toEntity() {
-        User user;
-        user = User.builder()
-                .userId(userId)
-                .password(password)
-                .name(name)
-                .gender(gender)
-                .birth(birth)
-                .phone(phone)
-                .addr(addr)
-                .club(club)
-                .build();
-        return user;
-    }
-
 }
