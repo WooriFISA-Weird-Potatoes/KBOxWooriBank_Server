@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PointHistoryDTO implements Serializable {
+public class PointHistoryDto implements Serializable {
     private Integer point;
     private List<Point> pointList;
 
