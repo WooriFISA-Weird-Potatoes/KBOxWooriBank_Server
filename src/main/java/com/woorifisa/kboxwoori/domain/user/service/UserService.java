@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -32,6 +31,11 @@ public class UserService {
     public Long join(UserDto userDto) {
         userDto.setPassword(encoder.encode(userDto.getPassword()));
         return userRepository.save(userDto.toEntity()).getId();
+    }
+
+    @Transactional
+    public boolean existsByUserId(String userId){
+        return  userRepository.existsByUserId(userId);
     }
 
     @Transactional
