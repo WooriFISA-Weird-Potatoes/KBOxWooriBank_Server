@@ -32,6 +32,9 @@ public class PredictionRedisRepository {
         return Arrays.asList(predictions.substring(1, predictions.length() - 1).split(", "));
     }
 
+    public void savePrediction(String userId, List<String> predictions) {
+        redisTemplate.opsForHash().put(getKey(), userId, predictions.toString());
+    }
 
     public Integer getMatchCount() {
         Object matchCount = redisTemplate.opsForHash().get(getKey(), COUNT);

@@ -33,4 +33,14 @@ public class PredictionController {
         return ResponseDto.success(prediction);
     }
 
+    @PostMapping
+    public ResponseDto savePrediction(@AuthenticationPrincipal PrincipalDetails principalDetails,
+                                      @Valid @RequestBody PredictionRequestDto predictionRequestDto) {
+        if (principalDetails == null) {
+            throw NotAuthenticatedAccountException.EXCEPTION;
+        }
+        predictionService.IsPredictionOngoing();
+        predictionService.savePrediction(principalDetails.getUsername(), predictionRequestDto);
+        return ResponseDto.success();
+    }
 }
