@@ -95,5 +95,8 @@ public class User {
         this.point = point;
     }
 
+    public void updatePoint(Integer point){
+        this.point = point;
+    }
 
 }

@@ -22,8 +22,12 @@ public enum CustomExceptionStatus {
     EVENT_IS_ENDED(1303, false, "이벤트가 마감되었습니다."),
     DUPLICATE_PARTICIPATION(1304, false, "같은 이벤트에 중복 참여는 불가합니다."),
 
-    POINT_OPERAION_ERROR(1700, false, "잔여 포인트가 부족합니다.");
+    QUIZ_ENDED(1500, false, "퀴즈 참여 시간이 아닙니다."),
+    QUIZ_NOT_FOUND(1501, false, "현재 진행중인 퀴즈가 없습니다."),
+    QUIZ_DUPLICATE_PARTICIPATION(1502, false, "같은 퀴즈에 중복 참여는 불가합니다."),
 
+    FILE_UPLOAD(1600, false, "파일 업로드에 실패헸습니다."),
+    POINT_OPERAION_ERROR(1700, false, "잔여 포인트가 부족합니다.");
 
     private final int status;
     private final boolean success;
