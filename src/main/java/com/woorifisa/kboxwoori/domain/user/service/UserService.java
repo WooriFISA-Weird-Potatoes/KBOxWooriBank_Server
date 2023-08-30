@@ -27,6 +27,11 @@ public class UserService {
     private final PredictionHistoryRepository predictionHistoryRepository;
     private final BCryptPasswordEncoder encoder;
 
+    private User getUserByUserId(String userId) {
+        return userRepository.findPointByUserId(userId)
+                .orElseThrow(() -> AccountNotFoundException.EXCEPTION);
+    }
+
     @Transactional
     public Long join(UserDto userDto) {
         userDto.setPassword(encoder.encode(userDto.getPassword()));
@@ -40,7 +45,7 @@ public class UserService {
 
     @Transactional
     public boolean deleteUser(String userId) {
-        User user = userRepository.findByUserId(userId).orElseThrow(() -> AccountNotFoundException.EXCEPTION);
+        User user = getUserByUserId(userId);
         pointRepository.deletePointByUserId(user.getId());
         userRepository.deleteByUserId(user.getUserId());
         return true;
@@ -48,14 +53,13 @@ public class UserService {
 
     @Transactional
     public UserInfoResponseDto findUser(String userId) {
-        User user = userRepository.findByUserId(userId).orElseThrow(() -> AccountNotFoundException.EXCEPTION);
-        UserInfoResponseDto updateUserResponseDTO = new UserInfoResponseDto(user);
-        return updateUserResponseDTO;
+        User user = getUserByUserId(userId);
+        return new UserInfoResponseDto(user);
     }
 
     @Transactional
     public UserInfoResponseDto updateUserInfo(PrincipalDetails pdetail, UserInfoResponseDto responseDTO){
-        User user = userRepository.findByUserId(pdetail.getUsername()).orElseThrow(() -> AccountNotFoundException.EXCEPTION);
+        User user = getUserByUserId(pdetail.getUsername());
         responseDTO.setPassword(encoder.encode(responseDTO.getPassword()));
         user.updateUser(responseDTO);
         pdetail.setUser(user);
@@ -64,26 +68,22 @@ public class UserService {
 
     @Transactional
     public UserPageResponseDto myPageUserInfo(String userId){
-        User user = userRepository.findByUserId(userId).orElseThrow(() -> AccountNotFoundException.EXCEPTION);
+        User user = getUserByUserId(userId);
         List<PredictionHistory> totalList = predictionHistoryRepository.findByUserId(userId).orElseThrow(() -> AccountNotFoundException.EXCEPTION);
         List<PredictionHistory> correctList = predictionHistoryRepository.findByUserIdAndIsCorrect(userId).orElseThrow(() -> AccountNotFoundException.EXCEPTION);
 
         int totalPredictionCount = totalList.size();
         int correctPredictionCount = correctList.size();
-        double correctRate = ((double) correctPredictionCount/totalPredictionCount) * 100;
+        double correctRate = totalPredictionCount > 0 ? ((double) correctPredictionCount / totalPredictionCount) * 100 : 0;
 
         UserPageResponseDto userPageResponseDto = new UserPageResponseDto(user);
-
-        if(totalPredictionCount == 0){
-            userPageResponseDto.setPredictedResult(0);
-        }
-        userPageResponseDto.setPredictedResult((int)correctRate);
+        userPageResponseDto.setPredictedResult((int) correctRate);
 
         return userPageResponseDto;
     }
 
     public Boolean IsWooriLinked(String userId) {
-        User user = userRepository.findByUserId(userId).orElseThrow(() -> AccountNotFoundException.EXCEPTION);
+        User user = getUserByUserId(userId);
         if (!user.getWooriLinked()) {
             throw WooriLinkRequiredException.EXCEPTION;
         }
