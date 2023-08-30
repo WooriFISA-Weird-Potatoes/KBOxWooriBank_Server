@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @RequiredArgsConstructor
 @Configuration
@@ -34,22 +36,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/join", "/api/login", "/api/check").permitAll()
-                .antMatchers("/api/users", "/api/point/**", "/api/users/mypage").hasRole("USER")
+                .antMatchers("/","/api/login", "/api/users/join", "/api/users/check").permitAll()
+                .antMatchers("/api/users/**").hasRole("USER")
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/api/login")
+                .loginProcessingUrl("/api/login-proc")
                 .usernameParameter("userId")
                 .passwordParameter("password")
-                .loginPage("/api/loginform")
+                .loginPage("/api/login")
                 .defaultSuccessUrl("/")
-                .failureUrl("/api/loginfail")
+                .failureUrl("/api/login")
                 .and()
                 .logout()
-                .logoutUrl("/api/logout")
-                .logoutSuccessUrl("/")
+                .logoutUrl("/api/users/logout")
+                .logoutSuccessHandler(configSuccessHandler())
                 .invalidateHttpSession(true).deleteCookies("JSESSIONID");
     }
+
+    private LogoutSuccessHandler configSuccessHandler() {
+        return (request, response, authentication) -> {
+            response.sendRedirect("/");
+        };
+    }
+
 }

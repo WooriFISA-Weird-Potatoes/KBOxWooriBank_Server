@@ -19,23 +19,18 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping({"", "/"})
-    public String index(@AuthenticationPrincipal PrincipalDetails pdetails){
-        System.out.println(pdetails.isWooriLinked());
-        return "메인페이지";
-    }
-
-    @PostMapping("/api/join")
+    @PostMapping("/join")
     public ResponseDto join(@Valid @RequestBody UserDto userDto){
         userService.join(userDto);
         return ResponseDto.success();
     }
 
-    @GetMapping("/api/check")
+    @GetMapping("/check")
     public ResponseDto checkIdDuplication(@RequestParam(value="userId") String userId){
         System.out.println(userId);
         if(userService.existsByUserId(userId)){
@@ -44,7 +39,7 @@ public class UserController {
         return ResponseDto.success();
     }
 
-    @DeleteMapping("/api/users")
+    @DeleteMapping
     public ResponseDto cancleMembership(@AuthenticationPrincipal PrincipalDetails pdetails, HttpServletRequest request){
         boolean result = userService.deleteUser(pdetails.getUsername());
         if(result){
@@ -57,19 +52,19 @@ public class UserController {
         return ResponseDto.success();
     }
 
-    @GetMapping("/api/users")
+    @GetMapping
     public ResponseDto<UserInfoResponseDto> showEditForm(@AuthenticationPrincipal PrincipalDetails pdetails){
         UserInfoResponseDto updateUserResponseDTO = userService.findUser(pdetails.getUsername());
         return ResponseDto.success(updateUserResponseDTO);
     }
 
-    @PutMapping("/api/users")
+    @PutMapping
     public ResponseDto<UserInfoResponseDto> EditUserInfo(@AuthenticationPrincipal PrincipalDetails pdetails, @Valid @RequestBody UserInfoResponseDto userDto){
         UserInfoResponseDto updateUserResponseDTO = userService.updateUserInfo(pdetails, userDto);
         return ResponseDto.success(updateUserResponseDTO);
     }
 
-    @GetMapping("/api/users/woori")
+    @GetMapping("/woori")
     public ResponseDto IsWooriLinked(@AuthenticationPrincipal PrincipalDetails pdetails){
         if (pdetails == null) {
             throw NotAuthenticatedAccountException.EXCEPTION;
@@ -78,7 +73,7 @@ public class UserController {
         return ResponseDto.success();
     }
 
-    @GetMapping("/api/users/mypage")
+    @GetMapping("/mypage")
     public ResponseDto mypage(@AuthenticationPrincipal PrincipalDetails pdetails){
         UserPageResponseDto userPageResponseDto = userService.myPageUserInfo(pdetails.getUsername());
         return ResponseDto.success(userPageResponseDto);

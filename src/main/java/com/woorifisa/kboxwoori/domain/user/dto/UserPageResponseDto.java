@@ -1,10 +1,7 @@
 package com.woorifisa.kboxwoori.domain.user.dto;
 
-import com.woorifisa.kboxwoori.domain.user.entity.Club;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
 import lombok.*;
-
-import java.io.Serializable;
 
 @Builder
 @AllArgsConstructor

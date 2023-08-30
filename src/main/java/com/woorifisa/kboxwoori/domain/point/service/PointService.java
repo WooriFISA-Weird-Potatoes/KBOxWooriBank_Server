@@ -24,11 +24,17 @@ public class PointService {
    private final PointRepository pointRepository;
    private final UserRepository userRepository;
 
+    private User getUserByUserId(String userId) {
+        return userRepository.findPointByUserId(userId)
+                .orElseThrow(() -> AccountNotFoundException.EXCEPTION);
+    }
+
     @Transactional
     public PointHistoryDto getPointHistory(String userId){
+        User user = getUserByUserId(userId);
         List<Point> pointHistory = pointRepository.findPointByUserId(userId);
+
         PointHistoryDto pointHistoryDTO = new PointHistoryDto();
-        User user = userRepository.findPointByUserId(userId).get();
         pointHistoryDTO.setPoint(user.getPoint());
         pointHistoryDTO.setPointList(pointHistory);
         return pointHistoryDTO;
@@ -37,7 +43,7 @@ public class PointService {
 
     @Transactional
     public UserPointResponseDto getUserPoint(String userId){
-        User user = userRepository.findPointByUserId(userId).get();
+        User user = getUserByUserId(userId);
         UserPointResponseDto userPointResponseDTO = new UserPointResponseDto();
         userPointResponseDTO.setPoint(user.getPoint());
         return userPointResponseDTO;
@@ -45,20 +51,23 @@ public class PointService {
 
     @Transactional
     public void usePoint(String userId, UserPointResponseDto point){
-        User user = userRepository.findPointByUserId(userId).orElseThrow(() -> AccountNotFoundException.EXCEPTION);
+        User user = getUserByUserId(userId);
+        int requestedPoints = point.getPoint();
+
+        if(user.getPoint() < requestedPoints){
+            throw InsufficientPointsException.EXCEPTION;
+        }
+
         PointUseDto pointUseDto = new PointUseDto();
         pointUseDto.setUser(user);
         pointUseDto.setStatusCode(PointStatus.USE);
         pointUseDto.setPoint(point.getPoint());
         pointUseDto.setCreatedAt(LocalDate.now());
-
-        if(user.getPoint() < point.getPoint()){
-            throw InsufficientPointsException.EXCEPTION;
-        }
-
-        int calculatedPoints = user.getPoint() - point.getPoint();
-        user.updateUserPoint(calculatedPoints);
         pointRepository.save(pointUseDto.toEntity());
+
+
+        int calculatedPoints = user.getPoint() - requestedPoints;
+        user.updateUserPoint(calculatedPoints);
         userRepository.save(user);
 
     }
