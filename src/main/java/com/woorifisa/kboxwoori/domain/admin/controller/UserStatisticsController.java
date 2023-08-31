@@ -49,12 +49,12 @@ public class UserStatisticsController {
         return ResponseDto.success(userStatisticsService.getPredictionStatisticsForLast30Days());
     }
 
-    @PostMapping("/uploadQuizFile")
+    @PostMapping("/upload/quiz")
     public ResponseDto<List<Quiz>> handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException{
         List<Quiz> quizList = userStatisticsService.processQuizFileUpload(file);
         return ResponseDto.success(quizList);
     }
-    @PostMapping("/uploadProductFile")
+    @PostMapping("/upload/product")
     public ResponseDto<List<Event>> handleProductFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
         List<Event> eventList = userStatisticsService.processEventFileUpload(file);
         return ResponseDto.success(eventList);
