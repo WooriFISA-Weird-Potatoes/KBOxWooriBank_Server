@@ -15,9 +15,11 @@ import java.time.LocalDate;
 @Data
 public class UserInfoResponseDto {
     @NotNull(message = "변경할 아이디를 입력해주세요.")
+    @Pattern(regexp = "^[a-zA-Z0-9]{5,}$", message = "아이디는 영문자, 숫자 조합 5글자 이상입니다.")
     private String userId;
 
     @NotNull(message = "변경할 비밀번호를 입력해주세요.")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%^&+=]).{8,}$", message = "비밀번호는 영문자, 숫자, 특수기호를 조합하여 8글자 이상이어야 합니다.")
     private String password;
 
     @NotNull(message = "변경할 이름을 입력해주세요.")
