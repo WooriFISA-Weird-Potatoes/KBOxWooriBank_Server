@@ -31,7 +31,12 @@ public enum CustomExceptionStatus {
 
     FILE_UPLOAD(1600, false, "파일 업로드에 실패헸습니다."),
 
-    POINT_OPERAION_ERROR(1700, false, "잔여 포인트가 부족합니다.");
+    POINT_OPERAION_ERROR(1700, false, "잔여 포인트가 부족합니다."),
+
+    CRAWLING_DATA_NOT_FOUND(1800, false, "크롤링할 데이터를 찾을 수 없습니다."),
+    CRAWLING_DATA_CAN_NOT_SAVE(1801, false, "크롤링한 데이터를 저장할 수 없습니다."),
+    CRAWLING_STORED_DATA_NOT_FOUND(1802, false, "크롤링한 데이터를 가져올 수 없습니다.");
+
 
     private final int status;
     private final boolean success;

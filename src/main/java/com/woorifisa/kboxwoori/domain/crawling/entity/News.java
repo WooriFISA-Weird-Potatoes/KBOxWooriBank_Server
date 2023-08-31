@@ -3,11 +3,13 @@ package com.woorifisa.kboxwoori.domain.crawling.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-@NoArgsConstructor
 @Getter
+@ToString
+@NoArgsConstructor
 @RedisHash("crawling:news")
 public class News {
     @Id
@@ -26,17 +28,4 @@ public class News {
         this.contentPreview = contentPreview;
         this.date = date;
     }
-
-//    public CrawledNewsDTO toResponseDTO() {
-//        news;
-//        news = News.builder()
-//                .id(id)
-//                .articleLink(articleLink)
-//                .imgLink(imgLink)
-//                .headline(headline)
-//                .contentPreview(contentPreview)
-//                .date(date)
-//                .build();
-//        return news;
-//    }
 }
