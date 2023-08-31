@@ -12,12 +12,14 @@ class NewsCrawlingServiceTest {
     void 크롤링뉴스저장() {
         service.crawlKboNews();
     }
-    @Test
-    void 크롤링뉴스검색() {
-       service.searchNewsByKeyword("한화");
-    }
+
     @Test
     void 크롤링뉴스전체리스트() {
         service.newsFindAll();
+    }
+
+    @Test
+    void 크롤링뉴스검색() {
+       service.searchNewsByKeyword("한화");
     }
 }
