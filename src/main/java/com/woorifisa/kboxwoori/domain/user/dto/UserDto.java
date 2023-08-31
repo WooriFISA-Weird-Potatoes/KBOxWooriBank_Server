@@ -16,9 +16,11 @@ import java.time.LocalDate;
 @Builder
 public class UserDto {
     @NotNull(message = "아이디를 입력해주세요.")
+    @Pattern(regexp = "^[a-zA-Z0-9]{5,}$", message = "아이디는 영문자, 숫자 조합 5글자 이상입니다.")
     private String userId;
 
     @NotNull(message = "비밀번호를 입력해주세요.")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%^&+=]).{8,}$", message = "비밀번호는 영문자, 숫자, 특수기호를 조합하여 8글자 이상이어야 합니다.")
     private String password;
 
     @NotNull(message = "이름을 입력해주세요.")
@@ -31,7 +33,7 @@ public class UserDto {
     private LocalDate birth;
 
     @NotNull(message = "휴대폰 번호를 입력해주세요.")
-    @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "10 ~ 11 자리의 숫자만 입력 가능합니다.")
+    @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "휴대폰 번호 양식을 확인해주세요.")
     private String phone;
 
     @NotNull(message = "주소를 입력해주세요.")
