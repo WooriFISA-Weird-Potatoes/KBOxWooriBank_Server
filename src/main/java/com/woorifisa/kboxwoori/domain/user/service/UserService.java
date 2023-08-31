@@ -7,6 +7,7 @@ import com.woorifisa.kboxwoori.domain.prediction.repository.PredictionHistoryRep
 import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDto;
 import com.woorifisa.kboxwoori.domain.user.dto.UserDto;
 import com.woorifisa.kboxwoori.domain.user.dto.UserPageResponseDto;
+import com.woorifisa.kboxwoori.domain.user.dto.UserSessionDto;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
 import com.woorifisa.kboxwoori.domain.user.exception.AccountNotFoundException;
 import com.woorifisa.kboxwoori.domain.user.repository.UserRepository;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class UserService {
     private final PointRepository pointRepository;
     private final PredictionHistoryRepository predictionHistoryRepository;
     private final BCryptPasswordEncoder encoder;
+    private final HttpSession session;
 
     private User getUserByUserId(String userId) {
         return userRepository.findPointByUserId(userId)
@@ -62,6 +65,7 @@ public class UserService {
         User user = getUserByUserId(pdetail.getUsername());
         responseDTO.setPassword(encoder.encode(responseDTO.getPassword()));
         user.updateUser(responseDTO);
+        session.setAttribute("user", new UserSessionDto(user));
         pdetail.setUser(user);
         return responseDTO;
     }
