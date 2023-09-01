@@ -75,7 +75,7 @@ class UserStatisticsServiceTest {
 
     @Test
     public void testGetUserStatisticsForLast30Days() {
-        //7일 테스트
+        //30일 테스트
         List<UserResponseDto> result = userStatisticsService.getUserStatisticsForLast30Days();
         result.forEach(dto -> {
             System.out.println("Total Users: " + dto.getTotalUsers());
@@ -102,7 +102,7 @@ class UserStatisticsServiceTest {
     @Test
     public void testProcessQuizFileUpload() throws IOException {
         //테스트할 csv 데이터 생성
-        String csvData = "퀴즈1,선택지1,선택지2,선택지3,선택지4,2023-08-28\n퀴즈2,선택지1,선택지2,선택지3,선택지4,2023-08-29\n퀴즈3,선택지1,선택지2,선택지3,선택지4,2023-08-30";
+        String csvData = "퀴즈1,a,선택지1,선택지2,선택지3,선택지4,2023-08-28\n퀴즈2,b,선택지1,선택지2,선택지3,선택지4,2023-08-29\n퀴즈3,b,선택지1,선택지2,선택지3,선택지4,2023-08-30";
         //MultipartFile 객체 생성 및 데이터 설정
         MockMultipartFile multipartFile = new MockMultipartFile(
                 "test.csv",           // 파일 이름
