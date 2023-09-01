@@ -7,6 +7,6 @@ public class InsufficientPointsException extends CustomException {
     public static final CustomException EXCEPTION = new InsufficientPointsException();
 
     private InsufficientPointsException(){
-        super(CustomExceptionStatus.POINT_OPERAION_ERROR);
+        super(CustomExceptionStatus.INSUFFICIENT_POINTS_EXCEPTION);
     }
 }
