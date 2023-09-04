@@ -6,9 +6,9 @@ import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.Id;
 
+@Getter
 @ToString
 @NoArgsConstructor
-@Getter
 @RedisHash("crawling:schedule")
 public class Schedule {
     @Id
@@ -23,7 +23,6 @@ public class Schedule {
     private String teamInfo;
     private String stadium;
     private String remarks;
-    //  private String game;
 
     @Builder
     public Schedule(String id, String date, String time, String team1, String team1Logo, String team2, String team2Logo, String score, String teamInfo, String stadium, String remarks) {

@@ -7,7 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
-import java.util.Map;
 
 @EnableRedisRepositories
 public interface ScheduleRepository extends CrudRepository<Schedule, String>, PagingAndSortingRepository<Schedule, String> {

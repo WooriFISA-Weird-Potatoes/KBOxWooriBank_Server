@@ -20,7 +20,6 @@ public class ScheduleDto {
     private String teamInfo;
     private String stadium;
     private String remarks;
-    //  private String game;
 
     public Schedule toEntity() {
         return Schedule.builder()

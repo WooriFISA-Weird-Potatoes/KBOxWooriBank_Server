@@ -1,14 +1,15 @@
 package com.woorifisa.kboxwoori.domain.crawling.entity;
 
-import jdk.jshell.Snippet;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-@NoArgsConstructor
 @Getter
+@ToString
+@NoArgsConstructor
 @RedisHash("crawling:rankings")
 public class Rankings {
     @Id
