@@ -31,14 +31,9 @@ public class TodaySchedule {
     private String team2SPState;
     private String team2SPLink;
     private String team2SPName;
-    private String comparisonLink;
-    private String comparisonText;
-    private String tvBroadcastLink;
-    private String tvBroadcastText;
-    private String remarks;
+
     @Builder
-    public TodaySchedule(String id, LocalDate date, String gameTime, String team1Name, String team1Logo, String team1Score, String team1SPState, String team1SPLink, String team1SPName, String team2Name, String team2Logo, String team2Score, String team2SPState, String team2SPLink, String team2SPName, String comparisonLink, String comparisonText
-    , String tvBroadcastLink, String tvBroadcastText, String remarks) {
+    public TodaySchedule(String id, LocalDate date, String gameTime, String team1Name, String team1Logo, String team1Score, String team1SPState, String team1SPLink, String team1SPName, String team2Name, String team2Logo, String team2Score, String team2SPState, String team2SPLink, String team2SPName) {
         this.id = id;
         this.date = date;
         this.gameTime = gameTime;
@@ -54,11 +49,6 @@ public class TodaySchedule {
         this.team2SPState = team2SPState;
         this.team2SPLink = team2SPLink;
         this.team2SPName = team2SPName;
-        this.comparisonLink = comparisonLink;
-        this.comparisonText = comparisonText;
-        this.tvBroadcastLink = tvBroadcastLink;
-        this.tvBroadcastText = tvBroadcastText;
-        this.remarks = remarks;
     }
     public TodayScheduleDto toResponseDTO() {
         return TodayScheduleDto.builder()
@@ -77,11 +67,6 @@ public class TodaySchedule {
                                .team2SPState(this.team2SPState)
                                .team2SPLink(this.team2SPLink)
                                .team2SPName(this.team2SPName)
-                               .comparisonLink(this.comparisonLink)
-                               .comparisonText(this.comparisonText)
-                               .tvBroadcastLink(this.tvBroadcastLink)
-                               .tvBroadcastText(this.tvBroadcastText)
-                               .remarks(this.remarks)
                                .build();
     }
 }

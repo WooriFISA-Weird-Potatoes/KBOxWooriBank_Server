@@ -26,11 +26,6 @@ public class TodayScheduleDto {
     private String team2SPState;
     private String team2SPLink;
     private String team2SPName;
-    private String comparisonLink;
-    private String comparisonText;
-    private String tvBroadcastLink;
-    private String tvBroadcastText;
-    private String remarks;
 
     public TodaySchedule toEntity() {
         return TodaySchedule.builder()
@@ -49,11 +44,6 @@ public class TodayScheduleDto {
                             .team2SPState(this.team2SPState)
                             .team2SPLink(this.team2SPLink)
                             .team2SPName(this.team2SPName)
-                            .comparisonLink(this.comparisonLink)
-                            .comparisonText(this.comparisonText)
-                            .tvBroadcastLink(this.tvBroadcastLink)
-                            .tvBroadcastText(this.tvBroadcastText)
-                            .remarks(this.remarks)
                             .build();
     }
 }
