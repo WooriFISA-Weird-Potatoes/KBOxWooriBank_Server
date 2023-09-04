@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -39,25 +40,21 @@ public class NewsCrawlingService {
                 String headline = null;
                 String contentPreview = null;
                 String date = null;
-                try {
-                    Element listItem = listItems.get(index);
-                    articleLink = listItem.select("span.photo a").attr("href");
-                    imgLink = listItem.select("span.photo img").attr("src");
-                    headline = listItem.select("div.txt strong a").text();
-                    contentPreview = listItem.select("div.txt p").first().ownText();
-                    date = listItem.select("div.txt p span.date").text();
-                } catch (Exception e) {
-                    throw CrawlingDataNotFoundException.EXCEPTION;
-                }
+                Element listItem = listItems.get(index);
+                articleLink = listItem.select("span.photo a").attr("href");
+                imgLink = listItem.select("span.photo img").attr("src");
+                headline = listItem.select("div.txt strong a").text();
+                contentPreview = listItem.select("div.txt p").first().ownText();
+                date = listItem.select("div.txt p span.date").text();
 
                 News saveNews = newsRepository.save(News.builder()
-                                        .id(formattedTime + "-" + String.format("%03d", index + 1))
-                                        .articleLink("https://www.koreabaseball.com/News/BreakingNews/" + articleLink)
-                                        .imgLink("https:" +imgLink)
-                                        .headline(headline)
-                                        .contentPreview(contentPreview)
-                                        .date(date)
-                                        .build());
+                                                        .id(formattedTime + "-" + String.format("%03d", index + 1))
+                                                        .articleLink("https://www.koreabaseball.com/News/BreakingNews/" + articleLink)
+                                                        .imgLink("https:" + imgLink)
+                                                        .headline(headline)
+                                                        .contentPreview(contentPreview)
+                                                        .date(date)
+                                                        .build());
                 log.info("뉴스 저장 !: " + saveNews);
             }
         } catch (Exception e) {
@@ -66,38 +63,26 @@ public class NewsCrawlingService {
     }
 
     public List<News> newsFindAll() {
-        List<News> newsFindAllResults = null;
-        try {
-            List<News> newsFindAll = newsRepository.findAll(Sort.by("id"));
-            newsFindAllResults = new ArrayList<>();
-            for (News news : newsFindAll) {
-                if (news.getId().contains(formattedTime)) {
-                    newsFindAllResults.add(news);
-                }
-            }
-            log.info("뉴스 API 호출 !: " + newsFindAllResults);
-        } catch (Exception e) {
+        List<News> newsFindAll = newsRepository.findAll(Sort.by("id"))
+                                               .stream().filter(news -> news.getId().contains(formattedTime))
+                                               .collect(Collectors.toList());
+        if (newsFindAll.isEmpty()) {
             throw CrawlingStoredDataNotFoundException.EXCEPTION;
         }
-        return newsFindAllResults;
+        return newsFindAll;
     }
 
     public List<News> searchNewsByKeyword(String keyword) {
-        List<News> newsFindAllResults = null;
-        try {
-            List<News> newsFindAll = newsRepository.findAll(Sort.by("id"));
-            newsFindAllResults = new ArrayList<>();
-            for (News news : newsFindAll) {
-                if (news.getId().contains(formattedTime) &&
-                        ((news.getHeadline().contains(keyword.toUpperCase())) ||
-                                (news.getHeadline().contains(keyword.toLowerCase())))) {
-                        newsFindAllResults.add(news);
-                }
-            }
-            log.info("뉴스 검색 API 호출 !: " + newsFindAllResults);
-        } catch (Exception e) {
+        List<News> newsFindAll = newsRepository.findAll(Sort.by("id"))
+                                               .stream().filter(news -> news.getId().contains(formattedTime))
+                                               .collect(Collectors.toList());
+        if (newsFindAll.isEmpty()) {
             throw CrawlingStoredDataNotFoundException.EXCEPTION;
         }
-        return newsFindAllResults;
+
+        return newsFindAll.stream()
+                          .filter(news -> news.getHeadline().contains(keyword.toUpperCase()) ||
+                                  news.getHeadline().contains(keyword.toLowerCase()))
+                          .collect(Collectors.toList());
     }
 }
