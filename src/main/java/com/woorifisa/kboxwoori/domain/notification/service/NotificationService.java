@@ -26,5 +26,19 @@ public class NotificationService {
         return notificationRepository.findTop30ByUser_UserIdOrderByCreatedAtDesc(userId).orElseThrow(() -> NotificationNotFoundException.EXCEPTION);
     }
 
+    public void savePointNotification(String userId, Long metadata) {
+        User user = userRepository.findPointByUserId(userId)
+                .orElseThrow(() -> AccountNotFoundException.EXCEPTION);
+
+        Notification notification = Notification.builder()
+                .user(user)
+                .type(Type.P)
+                .createdAt(LocalDateTime.now())
+                .isChecked(false)
+                .metadata(metadata)
+                .build();
+
+        notificationRepository.save(notification);
+    }
 
 }
