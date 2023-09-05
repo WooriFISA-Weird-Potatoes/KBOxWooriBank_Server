@@ -20,7 +20,7 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping
-    public ResponseDto<EventResponseDto> findEvent() {
+    public ResponseDto<EventResponseDto> getCurrentEvent() {
         return ResponseDto.success(eventService.findCurrentEvent());
     }
 
@@ -37,6 +37,23 @@ public class EventController {
         }
 
         eventService.joinEvent(principalDetails.getUsername());
+        return ResponseDto.success();
+    }
+
+    @GetMapping("/{eventId}")
+    public ResponseDto<EventResponseDto> getEvent(@PathVariable Long eventId) {
+        return ResponseDto.success(eventService.getEvent(eventId));
+    }
+
+    @PostMapping("/{eventId}/addr")
+    public ResponseDto saveAddress(@PathVariable Long eventId,
+                                   @AuthenticationPrincipal PrincipalDetails principalDetails,
+                                   @RequestBody String addr) {
+        if (principalDetails == null) {
+            throw NotAuthenticatedAccountException.EXCEPTION;
+        }
+
+        eventService.saveAddress(eventId, principalDetails.getUsername(), addr);
         return ResponseDto.success();
     }
 }

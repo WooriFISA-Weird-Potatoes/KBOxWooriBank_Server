@@ -3,11 +3,9 @@ package com.woorifisa.kboxwoori.domain.user.service;
 import com.woorifisa.kboxwoori.domain.event.exception.WooriLinkRequiredException;
 import com.woorifisa.kboxwoori.domain.point.repository.PointRepository;
 import com.woorifisa.kboxwoori.domain.prediction.entity.PredictionHistory;
+import com.woorifisa.kboxwoori.domain.prediction.exception.ParticipationRecordNotFoundException;
 import com.woorifisa.kboxwoori.domain.prediction.repository.PredictionHistoryRepository;
-import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDto;
-import com.woorifisa.kboxwoori.domain.user.dto.UserDto;
-import com.woorifisa.kboxwoori.domain.user.dto.UserPageResponseDto;
-import com.woorifisa.kboxwoori.domain.user.dto.UserSessionDto;
+import com.woorifisa.kboxwoori.domain.user.dto.*;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
 import com.woorifisa.kboxwoori.domain.user.exception.AccountNotFoundException;
 import com.woorifisa.kboxwoori.domain.user.repository.UserRepository;
@@ -15,13 +13,14 @@ import com.woorifisa.kboxwoori.global.config.security.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -41,7 +40,6 @@ public class UserService {
         return userRepository.save(userDto.toEntity()).getId();
     }
 
-    @Transactional
     public boolean existsByUserId(String userId){
         return  userRepository.existsByUserId(userId);
     }
@@ -54,7 +52,6 @@ public class UserService {
         return true;
     }
 
-    @Transactional
     public UserInfoResponseDto findUser(String userId) {
         User user = getUserByUserId(userId);
         return new UserInfoResponseDto(user);
@@ -70,11 +67,10 @@ public class UserService {
         return responseDTO;
     }
 
-    @Transactional
     public UserPageResponseDto myPageUserInfo(String userId){
         User user = getUserByUserId(userId);
         List<PredictionHistory> totalList = predictionHistoryRepository.findByUserId(userId).orElseThrow(() -> AccountNotFoundException.EXCEPTION);
-        List<PredictionHistory> correctList = predictionHistoryRepository.findByUserIdAndIsCorrect(userId).orElseThrow(() -> AccountNotFoundException.EXCEPTION);
+        List<PredictionHistory> correctList = predictionHistoryRepository.findByUserIdAndIsCorrect(userId).orElseThrow(() -> ParticipationRecordNotFoundException.EXCEPTION);
 
         int totalPredictionCount = totalList.size();
         int correctPredictionCount = correctList.size();
@@ -92,6 +88,11 @@ public class UserService {
             throw WooriLinkRequiredException.EXCEPTION;
         }
         return true;
+    }
+
+    public UserAddrResponseDto getAddress(String userId) {
+        User user = getUserByUserId(userId);
+        return new UserAddrResponseDto(user.getAddr());
     }
 
 }
