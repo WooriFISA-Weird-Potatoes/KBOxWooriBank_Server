@@ -16,17 +16,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @SpringBootTest
-class QuizServiceImplTest {
+class QuizServiceTest {
 
     @Autowired
     private QuizRepository quizRepository;
@@ -60,7 +60,7 @@ class QuizServiceImplTest {
                 .infoAgmt(true)
                 .build();
         userRepository.save(user);
-        key = "quiz:participant:" + getCurrentTime();
+        key = "quiz:participant:" + LocalDate.now();
         redisTemplate.delete(key);
     }
 
@@ -177,12 +177,6 @@ class QuizServiceImplTest {
 
         //이미 참여한 사용자 재참여 하려고 할 떄
         assertThatThrownBy(() -> quizService.submitAnswer(quizRequestDTO, "userid")).isInstanceOf(QuizDuplicatePartipation.class);
-    }
-
-    private static String getCurrentTime() {
-        LocalDateTime currentTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
-        return currentTime.format(formatter);
     }
 }
 
