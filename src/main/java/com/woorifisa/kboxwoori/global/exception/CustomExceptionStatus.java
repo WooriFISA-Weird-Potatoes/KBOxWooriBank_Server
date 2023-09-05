@@ -36,7 +36,9 @@ public enum CustomExceptionStatus {
     CRAWLING_DATA_NOT_FOUND(1800, false, "크롤링할 데이터를 찾을 수 없습니다."),
     CRAWLING_DATA_CAN_NOT_SAVE(1801, false, "크롤링한 데이터를 저장할 수 없습니다."),
     CRAWLING_STORED_DATA_NOT_FOUND(1802, false, "크롤링한 데이터를 가져올 수 없습니다.");
+    CRAWLING_STORED_DATA_NOT_FOUND(1802, false, "크롤링한 데이터를 가져올 수 없습니다."),
 
+    NOTIFICATION_NOT_FOUND(1900, false, "알림이 존재하지 않습니다.");
 
     private final int status;
     private final boolean success;
