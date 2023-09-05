@@ -21,6 +21,7 @@ public enum CustomExceptionStatus {
     INVALID_EVENT_PARTICIPATION_TIME( 1302, false, "이벤트 참여 시간이 아닙니다."),
     EVENT_IS_ENDED(1303, false, "이벤트가 마감되었습니다."),
     DUPLICATE_PARTICIPATION(1304, false, "같은 이벤트에 중복 참여는 불가합니다."),
+    WINNING_RECORD_NOT_FOUND(1305, false, "당첨 내역이 없습니다."),
 
     INVALID_PREDICTION_PARTICIPATION_TIME(1400, false, "승부예측 참여 시간이 아닙니다."),
     ALL_PREDICTIONS_REQUIRED(1401, false, "모든 경기 예측 후 참여 가능합니다."),
@@ -35,7 +36,6 @@ public enum CustomExceptionStatus {
 
     CRAWLING_DATA_NOT_FOUND(1800, false, "크롤링할 데이터를 찾을 수 없습니다."),
     CRAWLING_DATA_CAN_NOT_SAVE(1801, false, "크롤링한 데이터를 저장할 수 없습니다."),
-    CRAWLING_STORED_DATA_NOT_FOUND(1802, false, "크롤링한 데이터를 가져올 수 없습니다.");
     CRAWLING_STORED_DATA_NOT_FOUND(1802, false, "크롤링한 데이터를 가져올 수 없습니다."),
 
     NOTIFICATION_NOT_FOUND(1900, false, "알림이 존재하지 않습니다.");

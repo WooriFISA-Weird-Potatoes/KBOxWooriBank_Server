@@ -1,7 +1,8 @@
 package com.woorifisa.kboxwoori.domain.user.controller;
 
-import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDto;
+import com.woorifisa.kboxwoori.domain.user.dto.UserAddrResponseDto;
 import com.woorifisa.kboxwoori.domain.user.dto.UserDto;
+import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDto;
 import com.woorifisa.kboxwoori.domain.user.dto.UserPageResponseDto;
 import com.woorifisa.kboxwoori.domain.user.exception.NotAuthenticatedAccountException;
 import com.woorifisa.kboxwoori.domain.user.service.UserService;
@@ -78,5 +79,9 @@ public class UserController {
         UserPageResponseDto userPageResponseDto = userService.myPageUserInfo(pdetails.getUsername());
         return ResponseDto.success(userPageResponseDto);
     }
-    
+
+    @GetMapping ("/addr")
+    public ResponseDto<UserAddrResponseDto> getAddress(@AuthenticationPrincipal PrincipalDetails pdetails) {
+        return ResponseDto.success(userService.getAddress(pdetails.getUsername()));
+    }
 }
