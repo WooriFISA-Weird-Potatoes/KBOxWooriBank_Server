@@ -2,6 +2,7 @@ package com.woorifisa.kboxwoori.domain.prediction.controller;
 
 import com.woorifisa.kboxwoori.domain.prediction.dto.PredictionRequestDto;
 import com.woorifisa.kboxwoori.domain.prediction.dto.PredictionResponseDto;
+import com.woorifisa.kboxwoori.domain.prediction.exception.InvalidPredictionParticipationTimeException;
 import com.woorifisa.kboxwoori.domain.prediction.service.PredictionService;
 import com.woorifisa.kboxwoori.domain.user.exception.NotAuthenticatedAccountException;
 import com.woorifisa.kboxwoori.global.config.security.PrincipalDetails;
@@ -21,14 +22,13 @@ public class PredictionController {
 
     @GetMapping
     public ResponseDto<PredictionResponseDto> getPrediction(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        if (principalDetails == null) {
-            throw NotAuthenticatedAccountException.EXCEPTION;
+        PredictionResponseDto prediction = new PredictionResponseDto();
+
+        if (principalDetails != null) {
+            prediction = predictionService.getPrediction(principalDetails.getUsername());
         }
 
-        PredictionResponseDto prediction = predictionService.getPrediction(principalDetails.getUsername());
-        if (predictionService.IsPredictionOngoing()) {
-            prediction.setIsEnded(true);
-        }
+        prediction.setIsEnded(predictionService.isPredictionEnded());
 
         return ResponseDto.success(prediction);
     }
@@ -39,7 +39,11 @@ public class PredictionController {
         if (principalDetails == null) {
             throw NotAuthenticatedAccountException.EXCEPTION;
         }
-        predictionService.IsPredictionOngoing();
+
+        if (predictionService.isPredictionEnded()) {
+            throw InvalidPredictionParticipationTimeException.EXCEPTION;
+        }
+
         predictionService.savePrediction(principalDetails.getUsername(), predictionRequestDto);
         return ResponseDto.success();
     }
