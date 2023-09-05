@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class QuizResponseDto {
+    private Long id;
     private String question;
     private String choice1;
     private String choice2;
@@ -19,6 +20,7 @@ public class QuizResponseDto {
     private Boolean hasParticipated = false;
 
     public QuizResponseDto(Quiz quiz) {
+        this.id = quiz.getId();
         this.question = quiz.getQuestion();
         this.choice1 = quiz.getChoice1();
         this.choice2 = quiz.getChoice2();
@@ -29,3 +31,4 @@ public class QuizResponseDto {
     }
 
 }
+
