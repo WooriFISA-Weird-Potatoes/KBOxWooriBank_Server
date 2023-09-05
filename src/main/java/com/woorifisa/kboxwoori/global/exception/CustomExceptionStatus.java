@@ -25,6 +25,7 @@ public enum CustomExceptionStatus {
 
     INVALID_PREDICTION_PARTICIPATION_TIME(1400, false, "승부예측 참여 시간이 아닙니다."),
     ALL_PREDICTIONS_REQUIRED(1401, false, "모든 경기 예측 후 참여 가능합니다."),
+    PARTICIPATION_RECORD_NOT_FOUND(1402, false, "참여 내역이 없습니다."),
 
     QUIZ_ENDED(1500, false, "퀴즈 참여 시간이 아닙니다."),
     QUIZ_NOT_FOUND(1501, false, "현재 진행중인 퀴즈가 없습니다."),
