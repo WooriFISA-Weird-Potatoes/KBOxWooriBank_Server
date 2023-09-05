@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -34,10 +34,10 @@ public class Point {
     private Integer point;
 
     @Column(nullable = false)
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Builder
-    public Point(Long id, User user, PointStatus statusCode, Integer point, LocalDate createdAt) {
+    public Point(Long id, User user, PointStatus statusCode, Integer point, LocalDateTime createdAt) {
         this.id = id;
         this.user = user;
         this.statusCode = statusCode;
