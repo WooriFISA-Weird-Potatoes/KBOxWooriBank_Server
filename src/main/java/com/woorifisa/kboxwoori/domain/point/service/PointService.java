@@ -12,13 +12,14 @@ import com.woorifisa.kboxwoori.domain.user.exception.AccountNotFoundException;
 import com.woorifisa.kboxwoori.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class PointService {
 
    private final PointRepository pointRepository;
@@ -29,7 +30,6 @@ public class PointService {
                 .orElseThrow(() -> AccountNotFoundException.EXCEPTION);
     }
 
-    @Transactional
     public PointHistoryDto getPointHistory(String userId){
         User user = getUserByUserId(userId);
         List<Point> pointHistory = pointRepository.findPointByUserId(userId);
@@ -41,7 +41,6 @@ public class PointService {
 
     }
 
-    @Transactional
     public UserPointResponseDto getUserPoint(String userId){
         User user = getUserByUserId(userId);
         UserPointResponseDto userPointResponseDTO = new UserPointResponseDto();
@@ -62,14 +61,23 @@ public class PointService {
         pointUseDto.setUser(user);
         pointUseDto.setStatusCode(PointStatus.USE);
         pointUseDto.setPoint(point.getPoint());
-        pointUseDto.setCreatedAt(LocalDate.now());
+        pointUseDto.setCreatedAt(LocalDateTime.now());
         pointRepository.save(pointUseDto.toEntity());
-
 
         int calculatedPoints = user.getPoint() - requestedPoints;
         user.updateUserPoint(calculatedPoints);
-        userRepository.save(user);
+    }
 
+    public void savePoint(String userId, int pointEarned) {
+        User user = getUserByUserId(userId);
+
+        Point point = Point.builder()
+                .user(user)
+                .statusCode(PointStatus.SAVE)
+                .point(pointEarned)
+                .createdAt(LocalDateTime.now())
+                .build();
+        pointRepository.save(point);
     }
 
 }
