@@ -17,15 +17,16 @@ public class PredictionRedisRepository {
     private final RedisTemplate<String, String> redisTemplate;
 
     private static final String KEY = "prediction:";
+    private static final String INFO_KEY = "prediction:info:";
     private static final String COUNT = "match-count";
     private static final String END_TIME = "end-time";
 
     public Boolean hasParticipated(String userId) {
-        return redisTemplate.opsForHash().hasKey(getKey(), userId);
+        return redisTemplate.opsForHash().hasKey(getKey(KEY), userId);
     }
 
     public List<String> getPrediction(String userId) {
-        String predictions = (String) redisTemplate.opsForHash().get(getKey(), userId);
+        String predictions = (String) redisTemplate.opsForHash().get(getKey(KEY), userId);
         if (predictions == null) {
             return null;
         }
@@ -33,11 +34,11 @@ public class PredictionRedisRepository {
     }
 
     public void savePrediction(String userId, List<String> predictions) {
-        redisTemplate.opsForHash().put(getKey(), userId, predictions.toString());
+        redisTemplate.opsForHash().put(getKey(KEY), userId, predictions.toString());
     }
 
     public Integer getMatchCount() {
-        Object matchCount = redisTemplate.opsForHash().get(getKey(), COUNT);
+        Object matchCount = redisTemplate.opsForHash().get(getKey(INFO_KEY), COUNT);
         if (matchCount == null) {
             throw InvalidPredictionParticipationTimeException.EXCEPTION;
         }
@@ -45,15 +46,15 @@ public class PredictionRedisRepository {
     }
 
     public LocalTime getEndTime() {
-        Object endTime = redisTemplate.opsForHash().get(getKey(), END_TIME);
+        Object endTime = redisTemplate.opsForHash().get(getKey(INFO_KEY), END_TIME);
         if (endTime == null) {
             throw InvalidPredictionParticipationTimeException.EXCEPTION;
         }
         return LocalTime.parse(endTime.toString());
     }
 
-    private String getKey() {
-        return KEY + LocalDate.now();
+    private String getKey(String key) {
+        return key + LocalDate.now();
     }
 
 }
