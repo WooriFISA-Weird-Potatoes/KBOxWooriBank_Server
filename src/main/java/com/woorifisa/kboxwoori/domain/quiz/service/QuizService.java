@@ -64,6 +64,10 @@ public class QuizService {
         //정답일 경우 처리
         quizParticipantService.saveUserParticipation(user.getUserId());
         //TODO: 포인트 적립
+        quizRedisRepository.saveUserParticipation(userId);
+        pointService.savePoint(userId, CORRECT_ANSWER_POINTS);
+        notificationService.savePointNotification(userId, (long) CORRECT_ANSWER_POINTS);
+
         return new QuizResultResponseDto(true);
     }
 
