@@ -12,7 +12,7 @@ import java.util.List;
 @EnableRedisRepositories
 public interface TodayScheduleRepository extends CrudRepository<TodaySchedule, String>, PagingAndSortingRepository<TodaySchedule, String> {
     @Override
-    List<TodaySchedule> findAll(Sort id);
+    List<TodaySchedule> findAll(Sort sort);
 
     @Override
     List<TodaySchedule> findAllById(Iterable<String> strings);
