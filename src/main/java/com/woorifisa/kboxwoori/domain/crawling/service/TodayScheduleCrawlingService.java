@@ -137,10 +137,9 @@ public class TodayScheduleCrawlingService {
     }
 
     public void saveEarliestMatch() {
-        List<TodaySchedule> earliestMatch = todayScheduleRepository.findAll(Sort.by("id"))
+        List<TodaySchedule> earliestMatch = todayScheduleRepository.findByDate(LocalDate.now())
                                                                    .stream()
-                                                                   .filter(todaySchedule -> todaySchedule.getId().contains(formattedTime))
-                                                                   .filter(getGameTime -> !getGameTime.getGameTime().isEmpty())
+                                                                   .sorted(Comparator.comparing(TodaySchedule::getId))
                                                                    .collect(Collectors.toList());
         log.info("오늘 일정 중 가장 빠른 경기 시간 저장 !: " + earliestMatch);
         if (earliestMatch.isEmpty()) {
