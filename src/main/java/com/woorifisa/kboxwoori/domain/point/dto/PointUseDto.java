@@ -5,7 +5,6 @@ import com.woorifisa.kboxwoori.domain.point.entity.PointStatus;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
