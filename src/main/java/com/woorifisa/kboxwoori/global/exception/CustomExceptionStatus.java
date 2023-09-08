@@ -13,8 +13,13 @@ public enum CustomExceptionStatus {
 
     NOT_AUTHENTICATED_ACCOUNT(1100, false, "로그인이 필요합니다."),
     DUPLICATED_USERID(1101, false, "이미 사용중인 아이디입니다."),
+    INVALID_JWT(1102, false, "유효하지 않은 토큰입니다."),
+    ALREADY_EXPIRED_JWT(1103, false, "이미 만료된 토큰입니다."),
+    INVALID_REFRESH_TOKEN(1104, false, "유효하지 않은 RefreshToken 입니다."),
 
     ACCOUNT_NOT_FOUND(1200, false, "사용자를 찾을 수 없습니다."),
+    INVALID_USER_ID_PW(1201, false, "아이디 또는 비밀번호를 다시 확인해주세요."),
+    ACCOUNT_ACCESS_DENIED(1202, false, "권한이 없습니다."),
 
     ONGOING_EVENT_NOT_FOUND(1300, false, "현재 진행중인 이벤트가 없습니다."),
     WOORI_LINK_REQUIRED(1301, false, "우리 은행 계정 연동이 필요합니다."),
