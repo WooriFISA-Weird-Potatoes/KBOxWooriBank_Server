@@ -6,6 +6,7 @@ import com.woorifisa.kboxwoori.domain.event.exception.OngoingEventNotFoundExcept
 import com.woorifisa.kboxwoori.domain.event.repository.EventRepository;
 import com.woorifisa.kboxwoori.domain.user.entity.Club;
 import com.woorifisa.kboxwoori.domain.user.entity.Gender;
+import com.woorifisa.kboxwoori.domain.user.entity.Role;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
 import com.woorifisa.kboxwoori.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -80,7 +81,7 @@ class EventServiceTest {
     @Transactional
     void 이벤트_시간_외에_참여하면_실패() {
         User user = User.builder()
-                .admin(false)
+                .role(Role.ROLE_USER)
                 .userId("test")
                 .password("test")
                 .name("test")

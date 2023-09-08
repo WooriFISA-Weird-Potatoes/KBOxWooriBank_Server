@@ -1,7 +1,10 @@
 package com.woorifisa.kboxwoori.domain.user.entity;
 
-import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDto;
-import lombok.*;
+import com.woorifisa.kboxwoori.domain.user.dto.UserInfoRequestDto;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -18,8 +21,9 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Boolean admin;
+    private Role role;
 
     @Size(max = 100)
     @Column(nullable = false, unique = true)
@@ -65,8 +69,8 @@ public class User implements Serializable {
     private Boolean wooriLinked;
 
     @Builder
-    public User(Boolean admin, String userId, String password, String name, Gender gender, LocalDate birth, String phone, String addr, Club club, Integer point, Boolean svcAgmt, Boolean infoAgmt, Boolean wooriLinked) {
-        this.admin = admin;
+    public User(Role role, String userId, String password, String name, Gender gender, LocalDate birth, String phone, String addr, Club club, Integer point, Boolean svcAgmt, Boolean infoAgmt, Boolean wooriLinked) {
+        this.role = role;
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -81,7 +85,7 @@ public class User implements Serializable {
         this.wooriLinked = wooriLinked;
     }
 
-    public void updateUser(UserInfoResponseDto ResponseDTO){
+    public void updateUser(UserInfoRequestDto ResponseDTO){
         this.userId = ResponseDTO.getUserId();
         this.password = ResponseDTO.getPassword();
         this.name = ResponseDTO.getName();
@@ -93,11 +97,7 @@ public class User implements Serializable {
     }
 
     public void updateUserPoint(Integer point){
-        this.point = point;
-    }
-
-    public void updatePoint(Integer point){
-        this.point = point;
+        this.point += point;
     }
 
 }

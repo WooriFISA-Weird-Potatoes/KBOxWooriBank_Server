@@ -8,12 +8,14 @@ import com.woorifisa.kboxwoori.domain.quiz.exception.QuizDuplicatePartipation;
 import com.woorifisa.kboxwoori.domain.quiz.repository.QuizRepository;
 import com.woorifisa.kboxwoori.domain.user.entity.Club;
 import com.woorifisa.kboxwoori.domain.user.entity.Gender;
+import com.woorifisa.kboxwoori.domain.user.entity.Role;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
 import com.woorifisa.kboxwoori.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @SpringBootTest
+@Transactional
 class QuizServiceTest {
 
     @Autowired
@@ -47,7 +50,7 @@ class QuizServiceTest {
         User user = User.builder()
                 .userId("userid")
                 .gender(Gender.M)
-                .admin(false)
+                .role(Role.ROLE_USER)
                 .birth(LocalDate.now())
                 .phone("000")
                 .point(0)
