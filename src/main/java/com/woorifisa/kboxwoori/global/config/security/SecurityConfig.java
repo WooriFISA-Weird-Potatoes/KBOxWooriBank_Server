@@ -1,63 +1,61 @@
 package com.woorifisa.kboxwoori.global.config.security;
 
-import com.woorifisa.kboxwoori.domain.user.service.PrincipalDetailService;
+import com.woorifisa.kboxwoori.global.exception.security.CustomAccessDeniedHandler;
+import com.woorifisa.kboxwoori.global.exception.security.CustomAuthenticationEntryPoint;
+import com.woorifisa.kboxwoori.global.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @RequiredArgsConstructor
-@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    private final PrincipalDetailService principalDetailService;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final JwtFilter jwtFilter;
 
     @Bean
-    public BCryptPasswordEncoder encoder() {
+    public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(principalDetailService).passwordEncoder(encoder());
-    }
-
-    protected void configure(HttpSecurity http) throws Exception{
-        http
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .httpBasic().disable()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .csrf().disable()
-                .httpBasic()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
                 .and()
                 .authorizeRequests()
-                .antMatchers("/","/api/login", "/api/users/join", "/api/users/check", "/api/schedules", "/api/news", "/api/main/schedules", "/api/main/rankings", "/api/news/{keyword}").permitAll()
-                .antMatchers("/api/users/**").hasRole("USER")
+                //TODO: 권한 수정
+                .antMatchers("/api/auth/**", "/api/crawling/**", "/api/events", "/api/quizzes").permitAll()
+                .antMatchers("/api/users/**", "/api/events/**", "/api/notifications/**", "/api/point/**", "/api/predictions/**", "/api/quizzes/**").hasRole("USER")
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
+
                 .and()
-                .formLogin()
-                .loginProcessingUrl("/api/login-proc")
-                .usernameParameter("userId")
-                .passwordParameter("password")
-                .loginPage("/api/login")
-                .defaultSuccessUrl("/")
-                .failureUrl("/api/login")
+                .exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+
                 .and()
-                .logout()
-                .logoutUrl("/api/users/logout")
-                .logoutSuccessHandler(configSuccessHandler())
-                .invalidateHttpSession(true).deleteCookies("JSESSIONID");
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
-    private LogoutSuccessHandler configSuccessHandler() {
-        return (request, response, authentication) -> {
-            response.sendRedirect("/");
-        };
     }
 
 }
