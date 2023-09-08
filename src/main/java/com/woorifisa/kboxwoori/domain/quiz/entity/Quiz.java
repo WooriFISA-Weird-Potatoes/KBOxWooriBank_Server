@@ -1,14 +1,10 @@
 package com.woorifisa.kboxwoori.domain.quiz.entity;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConstructorBinding;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Entity
@@ -17,7 +13,6 @@ public class Quiz {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "quiz_id", nullable = false)
     private Long id;
 
     @Column(name = "created_at", nullable = false)

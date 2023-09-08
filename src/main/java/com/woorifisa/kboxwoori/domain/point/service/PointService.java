@@ -49,25 +49,25 @@ public class PointService {
     }
 
     @Transactional
-    public void usePoint(String userId, UserPointResponseDto point){
+    public void usePoint(String userId, UserPointResponseDto pointDto){
         User user = getUserByUserId(userId);
-        int requestedPoints = point.getPoint();
+        int requestedPoints = pointDto.getPoint();
 
         if(user.getPoint() < requestedPoints){
             throw InsufficientPointsException.EXCEPTION;
         }
 
-        PointUseDto pointUseDto = new PointUseDto();
-        pointUseDto.setUser(user);
-        pointUseDto.setStatusCode(PointStatus.USE);
-        pointUseDto.setPoint(point.getPoint());
-        pointUseDto.setCreatedAt(LocalDateTime.now());
-        pointRepository.save(pointUseDto.toEntity());
-
-        int calculatedPoints = user.getPoint() - requestedPoints;
-        user.updateUserPoint(calculatedPoints);
+        Point point = Point.builder()
+                .user(user)
+                .statusCode(PointStatus.USE)
+                .point(requestedPoints)
+                .createdAt(LocalDateTime.now())
+                .build();
+        pointRepository.save(point);
+        user.updateUserPoint(-requestedPoints);
     }
 
+    @Transactional
     public void savePoint(String userId, int pointEarned) {
         User user = getUserByUserId(userId);
 
@@ -78,6 +78,7 @@ public class PointService {
                 .createdAt(LocalDateTime.now())
                 .build();
         pointRepository.save(point);
+        user.updateUserPoint(pointEarned);
     }
 
 }

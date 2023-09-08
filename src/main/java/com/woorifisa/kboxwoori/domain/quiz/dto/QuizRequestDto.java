@@ -1,15 +1,15 @@
 package com.woorifisa.kboxwoori.domain.quiz.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@ToString
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuizRequestDto {
+    @NonNull
     private Long quizId;
+    @NonNull
     private char choice;
 }

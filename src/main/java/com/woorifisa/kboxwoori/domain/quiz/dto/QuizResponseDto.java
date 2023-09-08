@@ -17,7 +17,6 @@ public class QuizResponseDto {
     private String choice4;
     private LocalDate createdAt;
     private char answer;
-    private Boolean hasParticipated = false;
 
     public QuizResponseDto(Quiz quiz) {
         this.id = quiz.getId();
@@ -31,4 +30,3 @@ public class QuizResponseDto {
     }
 
 }
-
