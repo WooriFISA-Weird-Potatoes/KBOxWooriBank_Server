@@ -9,14 +9,12 @@ import com.woorifisa.kboxwoori.domain.user.exception.AccountNotFoundException;
 import com.woorifisa.kboxwoori.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
@@ -26,13 +24,13 @@ public class NotificationService {
         return notificationRepository.findTop30ByUser_UserIdOrderByCreatedAtDesc(userId).orElseThrow(() -> NotificationNotFoundException.EXCEPTION);
     }
 
-    public void savePointNotification(String userId, Long metadata) {
+    public void saveQuizNotification(String userId, Long metadata) {
         User user = userRepository.findPointByUserId(userId)
                 .orElseThrow(() -> AccountNotFoundException.EXCEPTION);
 
         Notification notification = Notification.builder()
                 .user(user)
-                .type(Type.P)
+                .type(Type.Q)
                 .createdAt(LocalDateTime.now())
                 .isChecked(false)
                 .metadata(metadata)
