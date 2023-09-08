@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-
 @Getter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
