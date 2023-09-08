@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/crawling")
 public class CrawlingController {
 
     private final NewsCrawlingService newsCrawlingService;
@@ -27,27 +29,27 @@ public class CrawlingController {
     private final ScheduleCrawlingService scheduleCrawlingService;
     private final TodayScheduleCrawlingService todayScheduleCrawlingService;
 
-    @GetMapping(path = "/api/news/{keyword}")
+    @GetMapping(path = "/news/{keyword}")
     public ResponseDto<List<News>> newsSearchedList(@PathVariable(name = "keyword") String keyword) {
         return ResponseDto.success(newsCrawlingService.searchNewsByKeyword(keyword));
     }
 
-    @GetMapping("/api/news")
+    @GetMapping("/news")
     public ResponseDto<List<News>> newsAllList() {
         return ResponseDto.success(newsCrawlingService.newsFindAll());
     }
 
-    @GetMapping("/api/main/rankings")
+    @GetMapping("/main/rankings")
     public ResponseDto<List<Rankings>> rankingsAllList() {
         return ResponseDto.success(kboRankingWebCrawlingService.rankingsFindAll());
     }
 
-    @GetMapping("/api/schedules")
+    @GetMapping("/schedules")
     public ResponseDto<List<Schedule>> scheduleAllList() {
         return ResponseDto.success(scheduleCrawlingService.scheduleFindAll());
     }
 
-    @GetMapping("/api/main/schedules")
+    @GetMapping("/main/schedules")
     public ResponseDto<List<TodaySchedule>> todayScheduleAllList() {
         return ResponseDto.success(todayScheduleCrawlingService.todayScheduleFindAll());
     }
