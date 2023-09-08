@@ -1,15 +1,15 @@
 package com.woorifisa.kboxwoori.domain.event.controller;
 
 import com.woorifisa.kboxwoori.domain.event.dto.EventResponseDto;
-import com.woorifisa.kboxwoori.domain.user.exception.NotAuthenticatedAccountException;
 import com.woorifisa.kboxwoori.domain.event.exception.WooriLinkRequiredException;
 import com.woorifisa.kboxwoori.domain.event.service.EventService;
-import com.woorifisa.kboxwoori.global.config.security.PrincipalDetails;
 import com.woorifisa.kboxwoori.global.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import static com.woorifisa.kboxwoori.global.util.AuthenticationUtil.getCurrentUserId;
+import static com.woorifisa.kboxwoori.global.util.AuthenticationUtil.isWooriLinked;
 
 @Slf4j
 @RestController
@@ -25,18 +25,13 @@ public class EventController {
     }
 
     @PostMapping("/{eventId}")
-    public ResponseDto joinEvent(@PathVariable Long eventId,
-                                 @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseDto joinEvent(@PathVariable Long eventId) {
         //TODO: eventId가 다를 때 처리
-        if (principalDetails == null) {
-            throw NotAuthenticatedAccountException.EXCEPTION;
-        }
-
-        if (!principalDetails.isWooriLinked()) {
+        if (!isWooriLinked()) {
             throw WooriLinkRequiredException.EXCEPTION;
         }
 
-        eventService.joinEvent(principalDetails.getUsername());
+        eventService.joinEvent(getCurrentUserId());
         return ResponseDto.success();
     }
 
@@ -47,13 +42,8 @@ public class EventController {
 
     @PostMapping("/{eventId}/addr")
     public ResponseDto saveAddress(@PathVariable Long eventId,
-                                   @AuthenticationPrincipal PrincipalDetails principalDetails,
                                    @RequestBody String addr) {
-        if (principalDetails == null) {
-            throw NotAuthenticatedAccountException.EXCEPTION;
-        }
-
-        eventService.saveAddress(eventId, principalDetails.getUsername(), addr);
+        eventService.saveAddress(eventId, getCurrentUserId(), addr);
         return ResponseDto.success();
     }
 }
