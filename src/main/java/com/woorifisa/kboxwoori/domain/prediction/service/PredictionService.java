@@ -37,7 +37,6 @@ public class PredictionService {
     }
 
     public void savePrediction(String userId, PredictionRequestDto predictionRequestDto) {
-        //TODO: 모두 예측했는지 확인 (경기 수는 가변값)
         if (predictionRequestDto.getPredictions().size() < predictionRedisRepository.getMatchCount()) {
             throw AllPredictionsRequiredException.EXCEPTION;
         }
