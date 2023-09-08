@@ -2,8 +2,12 @@ package com.woorifisa.kboxwoori.domain.user.dto;
 
 import com.woorifisa.kboxwoori.domain.user.entity.Club;
 import com.woorifisa.kboxwoori.domain.user.entity.Gender;
+import com.woorifisa.kboxwoori.domain.user.entity.Role;
 import com.woorifisa.kboxwoori.domain.user.entity.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
@@ -20,7 +24,7 @@ public class UserDto {
     private String userId;
 
     @NotNull(message = "비밀번호를 입력해주세요.")
-    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%^&+=]).{8,}$", message = "비밀번호는 영문자, 숫자, 특수기호를 조합하여 8글자 이상이어야 합니다.")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%^&+=?!]).{8,}$", message = "비밀번호는 영문자, 숫자, 특수기호를 조합하여 8글자 이상이어야 합니다.")
     private String password;
 
     @NotNull(message = "이름을 입력해주세요.")
@@ -53,7 +57,7 @@ public class UserDto {
     public User toEntity() {
         User user;
         user = User.builder()
-                .admin(false)
+                .role(Role.ROLE_USER)
                 .userId(userId)
                 .password(password)
                 .name(name)
