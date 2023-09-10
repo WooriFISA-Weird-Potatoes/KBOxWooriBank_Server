@@ -2,6 +2,7 @@ package com.woorifisa.kboxwoori.domain.crawling.service;
 
 import com.woorifisa.kboxwoori.domain.crawling.entity.TeamLogo;
 import com.woorifisa.kboxwoori.domain.crawling.entity.TodaySchedule;
+import com.woorifisa.kboxwoori.domain.crawling.exception.CrawlingDataNotFoundException;
 import com.woorifisa.kboxwoori.domain.crawling.exception.CrawlingDataSaveException;
 import com.woorifisa.kboxwoori.domain.crawling.exception.CrawlingStoredDataNotFoundException;
 import com.woorifisa.kboxwoori.domain.crawling.repository.TodayScheduleRepository;
@@ -11,7 +12,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,12 +56,12 @@ public class TodayScheduleCrawlingService {
                 String team2Name = "";
                 try {
                     for (Element vsDiv : row.select(".vs_lft, .vs_rgt")) {
-                        String teamName = vsDiv.select("strong").first().text();
-                        String teamScore = vsDiv.select("strong").last().text();
-                        String startingPlayer = vsDiv.select("span.game_info > span").first().text();
+                        String teamName = Optional.ofNullable(vsDiv.select("strong").first()).map(Element::text).orElse("");
+                        String teamScore = Optional.ofNullable(vsDiv.select("strong").last()).map(Element::text).orElse("");
+                        String startingPlayer = Optional.ofNullable(vsDiv.select("span.game_info > span").first()).map(Element::text).orElse("");
                         Element playerLinkTag = vsDiv.select("a").first();
-                        String playerLink = playerLinkTag.attr("href");
-                        String playerName = playerLinkTag.text();
+                        String playerLink = Optional.ofNullable(playerLinkTag).map(tag -> tag.attr("href")).orElse("");
+                        String playerName = Optional.ofNullable(playerLinkTag).map(Element::text).orElse("");
 
                         if (vsDiv.className().contains("vs_lft")) {
                             team1Name = teamName;
@@ -77,7 +78,7 @@ public class TodayScheduleCrawlingService {
                         }
                     }
                 } catch (Exception e) {
-                    throw CrawlingDataSaveException.EXCEPTION;
+                    throw CrawlingDataNotFoundException.EXCEPTION;
                 }
                 if (team1Name.isEmpty() && team2Name.isEmpty()) {
                     continue;

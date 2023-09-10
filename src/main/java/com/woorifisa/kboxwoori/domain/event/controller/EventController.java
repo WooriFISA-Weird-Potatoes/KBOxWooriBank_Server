@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 import static com.woorifisa.kboxwoori.global.util.AuthenticationUtil.getCurrentUserId;
 import static com.woorifisa.kboxwoori.global.util.AuthenticationUtil.isWooriLinked;
 
@@ -42,7 +44,8 @@ public class EventController {
 
     @PostMapping("/{eventId}/addr")
     public ResponseDto saveAddress(@PathVariable Long eventId,
-                                   @RequestBody String addr) {
+                                   @RequestBody Map<String, String> payload) {
+        String addr = payload.get("addr");
         eventService.saveAddress(eventId, getCurrentUserId(), addr);
         return ResponseDto.success();
     }
