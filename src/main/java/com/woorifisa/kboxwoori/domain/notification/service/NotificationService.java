@@ -24,6 +24,10 @@ public class NotificationService {
         return notificationRepository.findTop30ByUser_UserIdOrderByCreatedAtDesc(userId).orElseThrow(() -> NotificationNotFoundException.EXCEPTION);
     }
 
+    public void notificationMarkAsRead(Long id) {
+        notificationRepository.setIsCheckedTrue(id);
+    }
+
     public void saveQuizNotification(String userId, Long metadata) {
         User user = userRepository.findPointByUserId(userId)
                 .orElseThrow(() -> AccountNotFoundException.EXCEPTION);
