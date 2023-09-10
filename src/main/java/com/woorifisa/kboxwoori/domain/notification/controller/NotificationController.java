@@ -4,9 +4,7 @@ import com.woorifisa.kboxwoori.domain.notification.entity.Notification;
 import com.woorifisa.kboxwoori.domain.notification.service.NotificationService;
 import com.woorifisa.kboxwoori.global.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +20,12 @@ public class NotificationController {
     @GetMapping
     public ResponseDto<List<Notification>> getUserNotifications() {
         return ResponseDto.success(notificationService.getUserNotifications(getCurrentUserId()));
+    }
+
+    @PostMapping("/read/{id}")
+    public ResponseDto<String> markNotificationAsRead(@PathVariable Long id) {
+        notificationService.notificationMarkAsRead(id);
+        return ResponseDto.success("");
     }
 
 }
