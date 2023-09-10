@@ -18,6 +18,4 @@ public interface TodayScheduleRepository extends CrudRepository<TodaySchedule, S
     List<TodaySchedule> findAllById(Iterable<String> strings);
 
     List<TodaySchedule> findByDate(LocalDate date);
-
-    List<TodaySchedule> findByGameTime(String gameTime);
 }
