@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 //TODO: 권한 수정
                 .antMatchers("/api/auth/**", "/api/crawling/**", "/api/events", "/api/quizzes").permitAll()
-                .antMatchers("/api/users/**", "/api/events/**", "/api/notifications/**", "/api/point/**", "/api/predictions/**", "/api/quizzes/**").hasRole("USER")
+                .antMatchers("/api/users/**", "/api/events/**", "/api/notifications/**", "/api/point/**", "/api/predictions/**", "/api/quizzes/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
 
