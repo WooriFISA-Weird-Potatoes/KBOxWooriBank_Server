@@ -1,10 +1,7 @@
 package com.woorifisa.kboxwoori.domain.user.controller;
 
 import com.woorifisa.kboxwoori.domain.event.exception.WooriLinkRequiredException;
-import com.woorifisa.kboxwoori.domain.user.dto.UserAddrResponseDto;
-import com.woorifisa.kboxwoori.domain.user.dto.UserInfoRequestDto;
-import com.woorifisa.kboxwoori.domain.user.dto.UserInfoResponseDto;
-import com.woorifisa.kboxwoori.domain.user.dto.UserPageResponseDto;
+import com.woorifisa.kboxwoori.domain.user.dto.*;
 import com.woorifisa.kboxwoori.domain.user.service.UserService;
 import com.woorifisa.kboxwoori.global.response.ResponseDto;
 import com.woorifisa.kboxwoori.global.util.JwtUtil;
@@ -14,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import static com.woorifisa.kboxwoori.global.util.AuthenticationUtil.getCurrentUserId;
-import static com.woorifisa.kboxwoori.global.util.AuthenticationUtil.isWooriLinked;
+import static com.woorifisa.kboxwoori.global.util.AuthenticationUtil.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -68,5 +64,10 @@ public class UserController {
             throw WooriLinkRequiredException.EXCEPTION;
         }
         return ResponseDto.success();
+    }
+
+    @GetMapping("/role")
+    public ResponseDto<UserRoleResponseDto> getUserRole() {
+        return ResponseDto.success(new UserRoleResponseDto(getAuthorities()));
     }
 }
