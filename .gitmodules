@@ -1,4 +1,4 @@
 [submodule "KBOxWooriBank_Config"]
 	path = KBOxWooriBank_Config
 	url = https://github.com/WooriFISA-Weird-Potatoes/KBOxWooriBank_Config.git
-	branch = develop
+	branch = main
