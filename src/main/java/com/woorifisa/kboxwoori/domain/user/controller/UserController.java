@@ -25,6 +25,7 @@ public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
+
     @DeleteMapping
     public ResponseDto cancleMembership() {
         userService.deleteUser(getCurrentUserId());
