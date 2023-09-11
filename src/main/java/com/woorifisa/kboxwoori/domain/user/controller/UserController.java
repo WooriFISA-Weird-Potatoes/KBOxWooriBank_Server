@@ -32,6 +32,7 @@ public class UserController {
         return ResponseDto.success();
     }
 
+
     @GetMapping
     public ResponseDto<UserInfoResponseDto> showEditForm() {
         UserInfoResponseDto updateUserResponseDTO = userService.findUser(getCurrentUserId());
