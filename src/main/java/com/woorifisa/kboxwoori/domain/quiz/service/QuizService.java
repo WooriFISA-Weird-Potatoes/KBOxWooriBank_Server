@@ -26,7 +26,7 @@ public class QuizService {
     private final PointService pointService;
     private final NotificationService notificationService;
 
-    private static final int CORRECT_ANSWER_POINTS = 3;
+    private static final int CORRECT_ANSWER_POINTS = 50;
 
     public QuizResponseDto getCurrentQuiz() {
         List <Quiz> quizzes = quizRepository.findByCreatedAt(LocalDate.now());
