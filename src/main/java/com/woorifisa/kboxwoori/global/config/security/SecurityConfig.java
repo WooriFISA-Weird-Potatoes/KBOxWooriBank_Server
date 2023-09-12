@@ -63,6 +63,7 @@ public class SecurityConfig {
         config.addAllowedOrigin("http://localhost:3000"); // 로컬
         config.addAllowedOrigin("http://192.168.0.136:3000");
         config.addAllowedOrigin("http://192.168.0.216:3000");
+        config.addAllowedOrigin("http://kboxwoori.com");
         config.addAllowedMethod("*"); // 모든 메소드 허용.
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);
