@@ -18,16 +18,16 @@ public class UserStatistics {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "total_users", nullable = false)
+    @Column(name = "total_users")
     private Integer totalUsers;
 
-    @Column(name = "prediction_participants", nullable = false)
+    @Column(name = "prediction_participants")
     private Integer predictionParticipants;
 
-    @Column(name = "quiz_participants", nullable = false)
+    @Column(name = "quiz_participants")
     private Integer quizParticipants;
 
-    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(name = "created_at")
     private LocalDate createdAt;
 
 
