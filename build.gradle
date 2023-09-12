@@ -48,11 +48,3 @@ tasks.named('test') {
 test {
 	exclude 'com/woorifisa/**'
 }
-
-processResources.dependsOn('copySecret')
-
-tasks.register('copySecret', Copy){
-	from './KBOxWooriBank_Config'
-	include 'application-api.yml'
-	into './src/main/resources'
-}
