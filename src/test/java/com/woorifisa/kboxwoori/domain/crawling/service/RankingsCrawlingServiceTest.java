@@ -6,12 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class RankingsCrawlingServiceTest {
+
     @Autowired
     private RankingsCrawlingService service;
-    @Test
-    void 순위크롤링저장() {
-        service.crawlKboRanking();
-    }
+
     @Test
     void 순위크롤링모두가져오기() {
         service.rankingsFindAll();
