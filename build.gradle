@@ -56,4 +56,3 @@ tasks.register('copySecret', Copy){
 	include 'application-api.yml'
 	into './src/main/resources'
 }
-
