@@ -30,7 +30,7 @@ public class RankingsCrawlingService {
 
     public List<Rankings> rankingsFindAll() {
         List<Rankings> rankingsFindAll = rankingsRepository.findAll(Sort.by("id")).stream()
-                                                    .filter(rankings -> rankings.getId().contains(LocalDate.now().toString()))
+                                                    .filter(rankings -> rankings != null && rankings.getId().contains(LocalDate.now().toString()))
                                                     .collect(Collectors.toList());
         if (rankingsFindAll.isEmpty()) {
             throw CrawlingStoredDataNotFoundException.EXCEPTION;

@@ -33,7 +33,7 @@ public class ScheduleCrawlingService {
             List<Schedule> schedules = scheduleRepository.findAll(Sort.by("id"));
             scheduleResults = new ArrayList<>();
             for (Schedule schedule : schedules) {
-                if (schedule.getId().contains(LocalDate.now().toString())){
+                if (schedule != null && schedule.getId().contains(LocalDate.now().toString())){
                     scheduleResults.add(schedule);
                 }
             }
