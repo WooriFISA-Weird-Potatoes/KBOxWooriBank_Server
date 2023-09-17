@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -41,6 +42,10 @@ public class EventService {
     }
 
     public void joinEvent(String userId) {
+        if (event == null || !event.getStartDate().toLocalDate().equals(LocalDate.now())) {
+            findCurrentEvent();
+        }
+
         if (LocalDateTime.now().isBefore(event.getStartDate()) || LocalDateTime.now().isAfter(event.getEndDate())) {
             throw InvalidEventParticipationTimeException.EXCEPTION;
         }
