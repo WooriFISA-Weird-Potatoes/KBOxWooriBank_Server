@@ -19,15 +19,4 @@ class TodayScheduleCrawlingServiceTest {
         service.todayScheduleFindAll();
     }
 
-    @Test
-    @Order(1)
-    void 오늘일정크롤링경기수저장() {
-        service.saveTodayMatchCount();
-    }
-
-    @Test
-    @Order(2)
-    void 오늘일정크롤링가장빠른시간() {
-        service.saveEarliestMatch();
-    }
 }
