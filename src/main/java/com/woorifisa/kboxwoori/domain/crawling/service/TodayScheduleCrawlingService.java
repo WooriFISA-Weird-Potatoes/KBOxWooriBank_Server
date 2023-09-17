@@ -43,32 +43,5 @@ public class TodayScheduleCrawlingService {
         }
         return todaySchedules;
     }
-
-    public void saveTodayMatchCount() {
-        try {
-            List<TodaySchedule> todaySchedules = todayScheduleRepository.findByDate(LocalDate.now());
-            todaySchedules = todaySchedules.stream().sorted(Comparator.comparing(TodaySchedule::getId))
-                                           .collect(Collectors.toList());
-
-            // "gameTime": "취소"인 객체의 수를 세기
-            long cancelledCount = todaySchedules.stream().filter(schedule -> "취소".equals(schedule.getGameTime())).count();
-            int matchCountResult = todaySchedules.size() - (int) cancelledCount;
-
-            redisTemplate.opsForHash().put("prediction:info:" + LocalDate.now(), "match-count", String.valueOf(matchCountResult));
-        } catch (Exception e) {
-            throw CrawlingStoredDataNotFoundException.EXCEPTION;
-        }
-    }
-
-    public void saveEarliestMatch() {
-        List<TodaySchedule> earliestMatch = todayScheduleRepository.findByDate(LocalDate.now())
-                                                                   .stream()
-                                                                   .sorted(Comparator.comparing(TodaySchedule::getId))
-                                                                   .collect(Collectors.toList());
-        log.info("오늘 일정 중 가장 빠른 경기 시간 저장 !: " + earliestMatch);
-        if (earliestMatch.isEmpty()) {
-            throw CrawlingStoredDataNotFoundException.EXCEPTION;
-        }
-        redisTemplate.opsForHash().put("prediction:info:" + LocalDate.now(), "end-time", earliestMatch.get(0).getGameTime());
-    }
+    
 }

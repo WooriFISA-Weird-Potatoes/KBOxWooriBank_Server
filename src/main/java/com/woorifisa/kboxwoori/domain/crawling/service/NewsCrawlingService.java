@@ -29,8 +29,9 @@ public class NewsCrawlingService {
 
     public List<News> newsFindAll() {
         List<News> newsFindAll = newsRepository.findAll(Sort.by("id"))
-                                               .stream().filter(news -> news.getId().contains(LocalDate.now().toString()))
+                                               .stream().filter(news -> news != null && news.getId().contains(LocalDate.now().toString()))
                                                .collect(Collectors.toList());
+        log.info("newsFindAll = {}", newsFindAll);
         if (newsFindAll.isEmpty()) {
             throw CrawlingStoredDataNotFoundException.EXCEPTION;
         }
@@ -39,7 +40,7 @@ public class NewsCrawlingService {
 
     public List<News> searchNewsByKeyword(String keyword) {
         List<News> newsFindAll = newsRepository.findAll(Sort.by("id"))
-                                               .stream().filter(news -> news.getId().contains(LocalDate.now().toString()))
+                                               .stream().filter(news -> news != null && news.getId().contains(LocalDate.now().toString()))
                                                .collect(Collectors.toList());
         if (newsFindAll.isEmpty()) {
             throw CrawlingStoredDataNotFoundException.EXCEPTION;
