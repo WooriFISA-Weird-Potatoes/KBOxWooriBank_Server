@@ -58,7 +58,7 @@ public class UserStatisticsService {
     public List<PredictionResponseDto> getPredictionStatisticsForLast7Days() {
         List<UserStatistics> userStatisticsList = getUserStatisticsForLastNDays(7);
         return userStatisticsList.stream()
-                .map(userStatistics -> new PredictionResponseDto(userStatistics.getQuizParticipants(), userStatistics.getCreatedAt()))
+                .map(userStatistics -> new PredictionResponseDto(userStatistics.getPredictionParticipants(), userStatistics.getCreatedAt()))
                 .collect(Collectors.toList());
     }
 
@@ -75,7 +75,7 @@ public class UserStatisticsService {
         List<UserStatistics> userStatisticsList = getUserStatisticsForLastNDays(30);
         // UserStatistics 객체를 UserResponseDto로 변환
         return userStatisticsList.stream()
-                .map(userStatistics -> new QuizResponseDto(userStatistics.getTotalUsers(), userStatistics.getCreatedAt()))
+                .map(userStatistics -> new QuizResponseDto(userStatistics.getQuizParticipants(), userStatistics.getCreatedAt()))
                 .collect(Collectors.toList());
     }
 
@@ -83,7 +83,7 @@ public class UserStatisticsService {
         List<UserStatistics> userStatisticsList = getUserStatisticsForLastNDays(30);
         // UserStatistics 객체를 UserResponseDto로 변환
         return userStatisticsList.stream()
-                .map(userStatistics -> new PredictionResponseDto(userStatistics.getTotalUsers(), userStatistics.getCreatedAt()))
+                .map(userStatistics -> new PredictionResponseDto(userStatistics.getPredictionParticipants(), userStatistics.getCreatedAt()))
                 .collect(Collectors.toList());
     }
 
